@@ -47,7 +47,7 @@ function Page() {
                 setTitle('');
                 setShowSuccess(false);
                 reset();
-            }, 3000);
+            }, 10000);
 
         } catch (err) {
             console.error('Failed to create entry:', err);
