@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Flower, TreePine, Leaf, Sparkles, Heart, Star, RefreshCw, Calendar, Eye, Wand2} from 'lucide-react';
+import React, {useEffect, useState} from 'react';
+import {Calendar, Eye, Flower, Heart, Leaf, RefreshCw, Sparkles, Star, TreePine, Wand2} from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
 import type {GardenPlant} from '@/types';
 import {useStats} from '@/hooks/use-stats.ts';
@@ -71,7 +71,7 @@ function Page() {
             }
         };
 
-        switch (plant.type) {
+        switch (plant.plantType) {
             case 'FLOWER':
                 return <Flower {...iconProps} />;
             case 'TREE':
@@ -352,7 +352,7 @@ function Page() {
                                     <PlantIcon plant={{...selectedPlant, size: 2}}/>
                                 </div>
                                 <h3 className="text-2xl font-bold text-green-800 mb-2">
-                                    {getPlantTypeName(selectedPlant.type, selectedPlant.emotion)}
+                                    {getPlantTypeName(selectedPlant.plantType, selectedPlant.emotion)}
                                 </h3>
                                 {selectedPlant.diaryEntry && (
                                     <p className="text-green-600">
@@ -362,7 +362,8 @@ function Page() {
                             </div>
 
                             <div className="space-y-4 mb-6">
-                                <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-green-50 rounded-xl">
+                                <div
+                                    className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-green-50 rounded-xl">
                                     <span className="text-green-700">Growth Stage</span>
                                     <div className="flex gap-1">
                                         {[1, 2, 3, 4, 5].map(stage => (
@@ -378,7 +379,8 @@ function Page() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-blue-50 rounded-xl">
+                                <div
+                                    className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-blue-50 rounded-xl">
                                     <span className="text-blue-700 flex items-center gap-2">
                                         <Calendar size={16}/>
                                         Transformed
@@ -388,7 +390,8 @@ function Page() {
                                     </span>
                                 </div>
 
-                                <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-purple-50 rounded-xl">
+                                <div
+                                    className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-purple-50 rounded-xl">
                                     <span className="text-purple-700">Beauty Score</span>
                                     <div className="flex items-center gap-2">
                                         <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -405,7 +408,8 @@ function Page() {
 
                                 {/* Original entry info if available */}
                                 {selectedPlant.diaryEntry && (
-                                    <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-amber-50 rounded-xl">
+                                    <div
+                                        className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-amber-50 rounded-xl">
                                         <span className="text-amber-700 flex items-center gap-2">
                                             <Eye size={16}/>
                                             Original Entry

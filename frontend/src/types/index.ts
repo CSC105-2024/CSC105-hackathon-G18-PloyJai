@@ -16,7 +16,7 @@ export interface DiaryEntry {
 
 export interface GardenPlant {
     id: string;
-    type: string;
+    plantType: string;
     emotion: string;
     color: string;
     size: number;

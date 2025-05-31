@@ -12,7 +12,6 @@ export default async function(c: Context<AppEnv>) {
         const prisma = getPrisma();
         const {id: userId} = c.get('user');
 
-        // Get fully faded entries that have been transformed into plants
         const transformedEntries = await prisma.diaryEntry.findMany({
             where: {
                 userId,

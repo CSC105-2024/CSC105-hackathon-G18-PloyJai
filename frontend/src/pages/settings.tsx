@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import {Save, User, Palette, Clock, Shield, Bell, Trash2, Download, RefreshCw, RectangleEllipsis} from 'lucide-react';
+import React, {useState} from 'react';
+import {Clock, RectangleEllipsis, RefreshCw, Save, Trash2, User} from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
-import { apiClient } from '@/lib/api';
 import {useSettings} from '@/hooks/use-settings.ts';
-import { toast } from 'sonner';
+import {toast} from 'sonner';
 import type {Settings} from "@/types";
 
 function Page() {
-    const { settings, loading, error, updateSettings, refetch } = useSettings();
+    const {settings, loading, error, updateSettings, refetch} = useSettings();
     const [showSaveSuccess, setShowSaveSuccess] = useState(false);
     const [showEditConfirm, setShowEditConfirm] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -49,7 +48,7 @@ function Page() {
     };
 
     const handleSliderChange = (key: string, value: number) => {
-        setFormSettings(prev => ({ ...prev, [key]: value }));
+        setFormSettings(prev => ({...prev, [key]: value}));
     };
 
     const handleDeleteAccount = async () => {
@@ -67,22 +66,24 @@ function Page() {
     };
 
     const emotions = {
-        anger: { name: 'Anger', icon: '🔥', description: 'Fades quickly to reduce pain' },
-        sadness: { name: 'Sadness', icon: '💧', description: 'Moderate fade for healing time' },
-        anxiety: { name: 'Anxiety', icon: '⚡', description: 'Fades fairly fast for peace of mind' },
-        joy: { name: 'Joy', icon: '☀️', description: 'Lasts longest to preserve good memories' },
-        fear: { name: 'Fear', icon: '👻', description: 'Fades fast to get away from bad memories' },
-        love: { name: 'Love', icon: '💖', description: 'Endures long to keep warmth' },
-        hope: { name: 'Hope', icon: '🕯️', description: 'Faithful fade to make wish becomes true' },
-        neutral: { name: 'Peaceful', icon: '✨', description: 'Natural balanced fade' }
+        anger: {name: 'Anger', icon: '🔥', description: 'Fades quickly to reduce pain'},
+        sadness: {name: 'Sadness', icon: '💧', description: 'Moderate fade for healing time'},
+        anxiety: {name: 'Anxiety', icon: '⚡', description: 'Fades fairly fast for peace of mind'},
+        joy: {name: 'Joy', icon: '☀️', description: 'Lasts longest to preserve good memories'},
+        fear: {name: 'Fear', icon: '👻', description: 'Fades fast to get away from bad memories'},
+        love: {name: 'Love', icon: '💖', description: 'Endures long to keep warmth'},
+        hope: {name: 'Hope', icon: '🕯️', description: 'Faithful fade to make wish becomes true'},
+        neutral: {name: 'Peaceful', icon: '✨', description: 'Natural balanced fade'}
     };
 
     if (loading) {
         return (
             <DefaultLayout>
-                <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
+                <div
+                    className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
                     <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-indigo-300 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+                        <div
+                            className="w-16 h-16 border-4 border-indigo-300 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
                         <p className="text-slate-600">Loading your settings...</p>
                     </div>
                 </div>
@@ -93,7 +94,8 @@ function Page() {
     if (error) {
         return (
             <DefaultLayout>
-                <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
+                <div
+                    className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
                     <div className="text-center">
                         <div className="text-red-500 text-xl mb-4">❌</div>
                         <h3 className="text-xl font-bold text-slate-800 mb-2">Error Loading Settings</h3>
@@ -130,7 +132,7 @@ function Page() {
                                 className="flex items-center gap-2 px-3 py-2 bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-200 transition-colors"
                                 disabled={loading}
                             >
-                                <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+                                <RefreshCw size={16} className={loading ? 'animate-spin' : ''}/>
                                 Refresh
                             </button>
                         </div>
@@ -140,7 +142,8 @@ function Page() {
                 <div className="max-w-4xl mx-auto px-4 py-8">
                     {/* Success Message */}
                     {showSaveSuccess && (
-                        <div className="mb-6 p-4 bg-green-100 border border-green-300 rounded-2xl flex items-center gap-3">
+                        <div
+                            className="mb-6 p-4 bg-green-100 border border-green-300 rounded-2xl flex items-center gap-3">
                             <div className="text-green-600">✅</div>
                             <span className="text-green-800 font-medium">Settings saved successfully!</span>
                         </div>
@@ -159,7 +162,7 @@ function Page() {
                         <div className="bg-white/60 backdrop-blur-sm rounded-3xl border border-indigo-200 p-8">
                             <div className="flex flex-col md:flex-row items-center gap-3 mb-6">
                                 <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <Clock size={24} className="text-indigo-600" />
+                                    <Clock size={24} className="text-indigo-600"/>
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-gray-800">Emotion Fade Rates</h2>
@@ -173,7 +176,8 @@ function Page() {
                                     const value = formSettings[settingKey as keyof Settings] as number || 1.0;
 
                                     return (
-                                        <div key={key} className="flex flex-col md:flex-row max-md:flex-1 md:items-center justify-between p-4 bg-gray-50 rounded-2xl gap-4">
+                                        <div key={key}
+                                             className="flex flex-col md:flex-row max-md:flex-1 md:items-center justify-between p-4 bg-gray-50 rounded-2xl gap-4">
                                             <div className="flex flex-col md:flex-row items-center gap-4">
                                                 <span className="text-2xl">{emotion.icon}</span>
                                                 <div>
@@ -210,7 +214,7 @@ function Page() {
                         <div className="bg-white/60 backdrop-blur-sm rounded-3xl border border-red-200 p-8">
                             <div className="flex flex-col md:flex-row items-center gap-3 mb-6">
                                 <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                                    <User size={24} className="text-red-600" />
+                                    <User size={24} className="text-red-600"/>
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-gray-800">Account Management</h2>
@@ -223,14 +227,14 @@ function Page() {
                                     onClick={() => setShowEditConfirm(true)}
                                     className="w-full p-4 bg-red-50 hover:bg-red-100 border border-red-200 rounded-2xl flex items-center justify-center gap-3 transition-colors"
                                 >
-                                    <RectangleEllipsis size={20} className="text-amber-600" />
+                                    <RectangleEllipsis size={20} className="text-amber-600"/>
                                     <span className="font-medium text-amber-800">Change Password</span>
                                 </button>
                                 <button
                                     onClick={() => setShowDeleteConfirm(true)}
                                     className="w-full p-4 bg-red-50 hover:bg-red-100 border border-red-200 rounded-2xl flex items-center justify-center gap-3 transition-colors"
                                 >
-                                    <Trash2 size={20} className="text-red-600" />
+                                    <Trash2 size={20} className="text-red-600"/>
                                     <span className="font-medium text-red-800">Delete Account & All Data</span>
                                 </button>
                             </div>
@@ -245,12 +249,13 @@ function Page() {
                             >
                                 {isSaving ? (
                                     <>
-                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        <div
+                                            className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                                         Saving...
                                     </>
                                 ) : (
                                     <>
-                                        <Save size={20} />
+                                        <Save size={20}/>
                                         Save Settings
                                     </>
                                 )}
@@ -261,15 +266,18 @@ function Page() {
 
                 {/* Edit Confirmation Modal */}
                 {showEditConfirm && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+                    <div
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
                         <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200">
                             <div className="text-center mb-6">
-                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Trash2 size={32} className="text-red-600" />
+                                <div
+                                    className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Trash2 size={32} className="text-red-600"/>
                                 </div>
                                 <h3 className="text-xl font-bold text-red-800 mb-2">Confirm Account Deletion</h3>
                                 <p className="text-red-600">
-                                    This action cannot be undone. Your entire garden and all entries will be permanently deleted.
+                                    This action cannot be undone. Your entire garden and all entries will be permanently
+                                    deleted.
                                 </p>
                             </div>
 
@@ -293,15 +301,18 @@ function Page() {
 
                 {/* Delete Confirmation Modal */}
                 {showDeleteConfirm && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+                    <div
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
                         <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200">
                             <div className="text-center mb-6">
-                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Trash2 size={32} className="text-red-600" />
+                                <div
+                                    className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Trash2 size={32} className="text-red-600"/>
                                 </div>
                                 <h3 className="text-xl font-bold text-red-800 mb-2">Confirm Account Deletion</h3>
                                 <p className="text-red-600">
-                                    This action cannot be undone. Your entire garden and all entries will be permanently deleted.
+                                    This action cannot be undone. Your entire garden and all entries will be permanently
+                                    deleted.
                                 </p>
                             </div>
 

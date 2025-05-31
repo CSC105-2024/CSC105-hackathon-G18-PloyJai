@@ -1,20 +1,20 @@
-import React, {useState, type ForwardRefExoticComponent, type RefAttributes} from 'react';
+import React, {type ForwardRefExoticComponent, type RefAttributes, useState} from 'react';
 import {
-    Clock,
-    Eye,
     Calendar,
+    Clock,
     Droplets,
+    Eye,
+    EyeOff,
     Flame,
-    Zap,
-    Sun,
     Heart,
+    Leaf,
+    type LucideProps,
+    RefreshCw,
     Sparkles,
     Star,
-    EyeOff,
+    Sun,
     Timer,
-    Leaf,
-    RefreshCw,
-    type LucideProps
+    Zap
 } from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
 import {apiClient} from '@/lib/api';
@@ -352,7 +352,8 @@ function Page() {
 
                                     <div className="p-6">
                                         {/* Header */}
-                                        <div className="flex flex-col md:flex-row gap-4 items-start justify-between mb-4">
+                                        <div
+                                            className="flex flex-col md:flex-row gap-4 items-start justify-between mb-4">
                                             <div className="flex items-center gap-4">
                                                 <div
                                                     className={`relative w-14 h-14 rounded-full flex items-center justify-center shadow-lg ${
@@ -380,7 +381,8 @@ function Page() {
                                                     <h3 className="text-lg font-semibold text-slate-800">
                                                         {emotion.name}
                                                     </h3>
-                                                    <div className="flex flex-col md:flex-row md:items-center gap-3 text-sm text-slate-600">
+                                                    <div
+                                                        className="flex flex-col md:flex-row md:items-center gap-3 text-sm text-slate-600">
                                                         <div className="flex items-center gap-1">
                                                             <Calendar size={14}/>
                                                             {getTimeAgo(entry.createdAt)}
