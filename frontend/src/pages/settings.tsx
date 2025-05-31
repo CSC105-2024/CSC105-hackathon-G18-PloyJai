@@ -4,6 +4,7 @@ import DefaultLayout from "@/components/layout/default.tsx";
 import { apiClient } from '@/lib/api';
 import {useSettings} from '@/hooks/use-settings.ts';
 import { toast } from 'sonner';
+import type {Settings} from "@/types";
 
 function Page() {
     const { settings, loading, error, updateSettings, refetch } = useSettings();
@@ -14,7 +15,7 @@ function Page() {
     const [saveError, setSaveError] = useState<string | null>(null);
 
     // Local state for form values
-    const [formSettings, setFormSettings] = useState(settings || {
+    const [formSettings, setFormSettings] = useState<Settings>(settings || {
         angerFadeRate: 2.0,
         sadnessFadeRate: 1.5,
         anxietyFadeRate: 1.8,
@@ -169,7 +170,7 @@ function Page() {
                             <div className="space-y-6">
                                 {Object.entries(emotions).map(([key, emotion]) => {
                                     const settingKey = `${key}FadeRate`;
-                                    const value = formSettings[settingKey] || 1.0;
+                                    const value = formSettings[settingKey as keyof Settings] as number || 1.0;
 
                                     return (
                                         <div key={key} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">

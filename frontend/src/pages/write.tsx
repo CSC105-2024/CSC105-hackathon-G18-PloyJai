@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Send, Heart, Cloud, Zap, Sun, Droplets, Sparkles, Star } from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
 import { useCreateEntry } from '@/hooks/use-create-entries';
+import { toast } from 'sonner';
 
 function Page() {
     const [content, setContent] = useState('');
@@ -120,9 +121,9 @@ function Page() {
                             <p className="text-green-600 mb-2">
                                 Your feelings are beginning their transformation into something beautiful
                             </p>
-                            {lastAnalysis && (
+                            {emotion && lastAnalysis && (
                                 <div className="text-sm text-green-700 bg-green-50 rounded-lg p-3 mt-3">
-                                    <strong>AI Analysis:</strong> {emotions[emotion]?.name} detected with {Math.round(lastAnalysis.intensity * 100)}% intensity
+                                    <strong>AI Analysis:</strong> {emotions[emotion!]?.name} detected with {Math.round(lastAnalysis.intensity * 100)}% intensity
                                     (Confidence: {Math.round(lastAnalysis.confidence * 100)}%)
                                 </div>
                             )}

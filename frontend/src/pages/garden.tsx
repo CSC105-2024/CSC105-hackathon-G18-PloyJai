@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Flower, TreePine, Leaf, Sparkles, Heart, Star, RefreshCw, Calendar, Eye, Wand2 } from 'lucide-react';
+import React, {useState, useEffect} from 'react';
+import {Flower, TreePine, Leaf, Sparkles, Heart, Star, RefreshCw, Calendar, Eye, Wand2} from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
-import type { GardenPlant } from '@/types';
+import type {GardenPlant} from '@/types';
 import {useStats} from '@/hooks/use-stats.ts';
 import {useCleanup} from '@/hooks/use-cleanup.ts';
 import {useGardenWithCleanup} from '@/hooks/use-garden.ts';
-import { toast } from 'sonner';
+import {toast} from 'sonner';
 
 
 function Page() {
-    const { plants, loading: plantsLoading, error: plantsError, refetch: refetchGarden } = useGardenWithCleanup();
-    const { stats, loading: statsLoading, error: statsError, refetch: refetchStats } = useStats();
-    const { runCleanup, loading: cleanupLoading } = useCleanup();
+    const {plants, loading: plantsLoading, error: plantsError, refetch: refetchGarden} = useGardenWithCleanup();
+    const {stats, loading: statsLoading, error: statsError, refetch: refetchStats} = useStats();
+    const {runCleanup, loading: cleanupLoading} = useCleanup();
     const [selectedPlant, setSelectedPlant] = useState<GardenPlant | null>(null);
     const [gardenStats, setGardenStats] = useState({
         totalPlants: 0,
@@ -56,8 +56,8 @@ function Page() {
         }
     };
 
-    
-    const PlantIcon = ({ plant }: { plant: GardenPlant }) => {
+
+    const PlantIcon = ({plant}: { plant: GardenPlant }) => {
         const baseSize = 24 * plant.size;
         const opacity = Math.min(0.3 + (plant.growthStage * 0.15), 1);
 
@@ -89,7 +89,7 @@ function Page() {
         }
     };
 
-    
+
     const getPlantTypeName = (type: string, emotion: string) => {
         const names = {
             FLOWER: emotion === 'JOY' ? '🌸 Flower of Happiness' : '🌺 Flower of Love',
@@ -102,7 +102,7 @@ function Page() {
         return names[type as keyof typeof names] || '🌱 Beautiful Plant';
     };
 
-    
+
     const getEmotionName = (emotion: string) => {
         const emotions = {
             JOY: 'Joy',
@@ -117,7 +117,7 @@ function Page() {
         return emotions[emotion as keyof typeof emotions] || emotion;
     };
 
-    
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -129,9 +129,11 @@ function Page() {
     if (plantsLoading || statsLoading) {
         return (
             <DefaultLayout>
-                <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center">
+                <div
+                    className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center">
                     <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-green-300 border-t-green-600 rounded-full animate-spin mx-auto mb-4"></div>
+                        <div
+                            className="w-16 h-16 border-4 border-green-300 border-t-green-600 rounded-full animate-spin mx-auto mb-4"></div>
                         <p className="text-slate-600">Growing your garden...</p>
                     </div>
                 </div>
@@ -142,7 +144,8 @@ function Page() {
     if (plantsError || statsError) {
         return (
             <DefaultLayout>
-                <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center">
+                <div
+                    className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center">
                     <div className="text-center">
                         <div className="text-red-500 text-xl mb-4">🥀</div>
                         <h3 className="text-xl font-bold text-slate-800 mb-2">Error Loading Garden</h3>
@@ -180,7 +183,7 @@ function Page() {
                                     disabled={cleanupLoading}
                                     className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-600 rounded-lg hover:bg-purple-200 transition-colors disabled:opacity-50"
                                 >
-                                    <Wand2 size={16} className={cleanupLoading ? 'animate-spin' : ''} />
+                                    <Wand2 size={16} className={cleanupLoading ? 'animate-spin' : ''}/>
                                     {cleanupLoading ? 'Growing...' : 'Grow Plants'}
                                 </button>
                                 <button
@@ -188,7 +191,8 @@ function Page() {
                                     className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-colors"
                                     disabled={plantsLoading || statsLoading}
                                 >
-                                    <RefreshCw size={16} className={(plantsLoading || statsLoading) ? 'animate-spin' : ''} />
+                                    <RefreshCw size={16}
+                                               className={(plantsLoading || statsLoading) ? 'animate-spin' : ''}/>
                                     Refresh
                                 </button>
                                 <div className="text-right">
@@ -207,7 +211,8 @@ function Page() {
                 {/* Garden Stats */}
                 <div className="max-w-6xl mx-auto px-4 py-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-green-200 transform hover:scale-105 transition-all">
+                        <div
+                            className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-green-200 transform hover:scale-105 transition-all">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                                     🌸
@@ -220,7 +225,8 @@ function Page() {
                             </div>
                         </div>
 
-                        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-blue-200 transform hover:scale-105 transition-all">
+                        <div
+                            className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-blue-200 transform hover:scale-105 transition-all">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                                     💙
@@ -233,13 +239,15 @@ function Page() {
                             </div>
                         </div>
 
-                        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-purple-200 transform hover:scale-105 transition-all">
+                        <div
+                            className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-purple-200 transform hover:scale-105 transition-all">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                                     ✨
                                 </div>
                                 <div>
-                                    <div className="text-2xl font-bold text-purple-800">{gardenStats.gardenBeauty}%</div>
+                                    <div className="text-2xl font-bold text-purple-800">{gardenStats.gardenBeauty}%
+                                    </div>
                                     <div className="text-purple-600">Garden Beauty</div>
                                     <div className="text-xs text-purple-500">Transformation rate</div>
                                 </div>
@@ -251,10 +259,13 @@ function Page() {
                 {/* Garden View */}
                 <div className="max-w-6xl mx-auto px-4 pb-8">
                     {plants.length > 0 ? (
-                        <div className="bg-white/40 backdrop-blur-sm rounded-3xl border border-green-200 overflow-hidden">
-                            <div className="relative h-96 md:h-[500px] bg-gradient-to-b from-sky-100 via-green-50 to-green-100">
+                        <div
+                            className="bg-white/40 backdrop-blur-sm rounded-3xl border border-green-200 overflow-hidden">
+                            <div
+                                className="relative h-96 md:h-[500px] bg-gradient-to-b from-sky-100 via-green-50 to-green-100">
                                 {/* Ground */}
-                                <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-green-200 to-transparent"></div>
+                                <div
+                                    className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-green-200 to-transparent"></div>
 
                                 {/* Plants */}
                                 {plants.map((plant) => (
@@ -269,17 +280,17 @@ function Page() {
                                         onClick={() => setSelectedPlant(plant)}
                                     >
                                         <div className="relative">
-                                            <PlantIcon plant={plant} />
+                                            <PlantIcon plant={plant}/>
                                             {/* Growth sparkles for mature plants */}
                                             {plant.growthStage >= 2 && (
                                                 <div className="absolute -top-2 -right-2 animate-pulse">
-                                                    <Sparkles size={12} color={plant.color} />
+                                                    <Sparkles size={12} color={plant.color}/>
                                                 </div>
                                             )}
                                             {/* Beauty glow for high-beauty plants */}
                                             {plant.beauty > 0.8 && (
                                                 <div className="absolute inset-0 rounded-full animate-ping opacity-20"
-                                                     style={{ backgroundColor: plant.color }}></div>
+                                                     style={{backgroundColor: plant.color}}></div>
                                             )}
                                         </div>
                                     </div>
@@ -302,7 +313,8 @@ function Page() {
                         </div>
                     ) : (
                         /* Empty Garden State */
-                        <div className="bg-white/40 backdrop-blur-sm rounded-3xl border border-green-200 p-16 text-center">
+                        <div
+                            className="bg-white/40 backdrop-blur-sm rounded-3xl border border-green-200 p-16 text-center">
                             <div className="text-6xl mb-6">🌱</div>
                             <h3 className="text-2xl font-bold text-slate-600 mb-3">Your Garden is Waiting</h3>
                             <p className="text-slate-500 max-w-md mx-auto mb-6">
@@ -329,18 +341,22 @@ function Page() {
 
                 {/* Plant Detail Modal */}
                 {selectedPlant && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
                         <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-green-200 shadow-2xl">
                             <div className="text-center mb-6">
-                                <div className="inline-flex items-center justify-center w-20 h-20 bg-green-50 rounded-full mb-4">
-                                    <PlantIcon plant={{ ...selectedPlant, size: 2 }} />
+                                <div
+                                    className="inline-flex items-center justify-center w-20 h-20 bg-green-50 rounded-full mb-4">
+                                    <PlantIcon plant={{...selectedPlant, size: 2}}/>
                                 </div>
                                 <h3 className="text-2xl font-bold text-green-800 mb-2">
                                     {getPlantTypeName(selectedPlant.type, selectedPlant.emotion)}
                                 </h3>
-                                <p className="text-green-600">
-                                    Born from {getEmotionName(selectedPlant.diaryEntry.emotion)}
-                                </p>
+                                {selectedPlant.diaryEntry && (
+                                    <p className="text-green-600">
+                                        Born from {getEmotionName(selectedPlant.diaryEntry.emotion)}
+                                    </p>
+                                )}
                             </div>
 
                             <div className="space-y-4 mb-6">
@@ -362,11 +378,11 @@ function Page() {
 
                                 <div className="flex justify-between items-center p-3 bg-blue-50 rounded-xl">
                                     <span className="text-blue-700 flex items-center gap-2">
-                                        <Calendar size={16} />
+                                        <Calendar size={16}/>
                                         Transformed
                                     </span>
                                     <span className="text-blue-600 font-medium">
-                                        {formatDate(selectedPlant.diaryEntry.transformedAt)}
+                                        {selectedPlant.diaryEntry ? formatDate(selectedPlant.diaryEntry.transformedAt) : "Unknown Date"}
                                     </span>
                                 </div>
 
@@ -376,7 +392,7 @@ function Page() {
                                         <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-purple-400 transition-all"
-                                                style={{ width: `${selectedPlant.beauty * 100}%` }}
+                                                style={{width: `${selectedPlant.beauty * 100}%`}}
                                             />
                                         </div>
                                         <span className="text-purple-600 font-medium">
@@ -389,7 +405,7 @@ function Page() {
                                 {selectedPlant.diaryEntry && (
                                     <div className="flex justify-between items-center p-3 bg-amber-50 rounded-xl">
                                         <span className="text-amber-700 flex items-center gap-2">
-                                            <Eye size={16} />
+                                            <Eye size={16}/>
                                             Original Entry
                                         </span>
                                         <span className="text-amber-600 font-medium">
@@ -420,7 +436,8 @@ function Page() {
                         </p>
                         {plants.length > 0 && (
                             <div className="mt-4 text-sm text-green-500">
-                                Your garden contains {plants.length} beautiful {plants.length === 1 ? 'plant' : 'plants'}
+                                Your garden
+                                contains {plants.length} beautiful {plants.length === 1 ? 'plant' : 'plants'}
                                 {gardenStats.gardenBeauty > 0 && ` with ${gardenStats.gardenBeauty}% transformation rate`}
                             </div>
                         )}

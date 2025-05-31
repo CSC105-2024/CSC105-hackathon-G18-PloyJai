@@ -3,9 +3,9 @@ import { IconPencilHeart, IconPicnicTable } from "@tabler/icons-react";
 
 function LoadingLayout() {
   return (
-    <div className="animate-in flex min-h-svh flex-col items-center justify-center text-center">
+    <div className="animate-in flex min-h-svh flex-col items-center justify-center text-center gap-8">
       <IconPencilHeart
-        className="size-32 animate-pulse"
+        className="size-32 animate-pulse text-purple-500"
         aria-label="Loading..."
       />
       <div className="flex flex-col items-center gap-4">
