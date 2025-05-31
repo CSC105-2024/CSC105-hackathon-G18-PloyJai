@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String   @default("")
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  diaryEntries DiaryEntry[]
+  gardenPlants GardenPlant[]
+
+  @@map("users")
+}
+
+model DiaryEntry {
+  id      String  @id @default(cuid())
+  userId  String
+  content String  @db.Text
+  title   String? @db.VarChar(255)
+
+  emotion      EmotionType
+  emotionScore Float       @default(0.5) // 0-1 scale of intensity
+
+  fadeStartDate  DateTime @default(now())
+  fadeRate       Float    @default(1.0) // Base fade rate multiplier
+  currentOpacity Float    @default(1.0) // Current visibility (0-1)
+  isFullyFaded   Boolean  @default(false)
+
+  viewCount     Int       @default(0)
+  transformedAt DateTime?
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastViewedAt DateTime?
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gardenPlant GardenPlant?
+
+  @@map("diary_entries")
+}
+
+model GardenPlant {
+  id           String @id @default(cuid())
+  userId       String
+  diaryEntryId String @unique
+
+  plantType   PlantType
+  growthStage Int       @default(1) // 1-5 growth stages
+  color       String    @db.VarChar(7) // Hex color
+  size        Float     @default(1.0)
+  beauty      Float     @default(0.5) // Beauty score based on healing
+
+  positionX Float
+  positionY Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  diaryEntry DiaryEntry @relation(fields: [diaryEntryId], references: [id], onDelete: Cascade)
+
+  @@map("garden_plants")
+}
+
+model FadeSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  // Fade rate multipliers for different emotions
+  angerFadeRate   Float @default(2.0)
+  sadnessFadeRate Float @default(1.5)
+  anxietyFadeRate Float @default(1.8)
+  joyFadeRate     Float @default(0.3)
+  loveFadeRate    Float @default(0.2)
+  neutralFadeRate Float @default(1.0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("fade_settings")
+}
+
+enum EmotionType {
+  ANGER
+  SADNESS
+  ANXIETY
+  JOY
+  FEAR
+  LOVE
+  HOPE
+  NEUTRAL
+
+  @@map("emotion_type")
+}
+
+enum PlantType {
+  FLOWER // From joy/love
+  TREE // From growth/strength
+  SUCCULENT // From resilience
+  VINE // From connection
+  MOSS // From gentle healing
+  CRYSTAL // From clarity/insight
+
+  @@map("plant_type")
+}

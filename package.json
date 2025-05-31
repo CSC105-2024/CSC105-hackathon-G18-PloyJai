@@ -1,0 +1,65 @@
+{
+  "name": "g18-hackathon-ployjai",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:frontend": "pnpm --filter frontend run dev",
+    "dev:backend": "pnpm --filter backend run dev"
+  },
+  "keywords": [],
+  "authors": [
+    {
+      "name": "Theerawat Patthawee",
+      "url": "https://github.com/ttwrpz"
+    },
+    {
+      "name": "Karnsinee Phophutaraksa",
+      "url": "https://github.com/Tienkarnsinee"
+    },
+    {
+      "name": "Jirapon Thipbodee",
+      "url": "https://github.com/Jirapon-Thipbodee"
+    },
+    {
+      "name": "Chotiwet Wisitworanat",
+      "url": "https://github.com/Sunthewhat"
+    },
+    {
+      "name": "Thanatat Wongabut",
+      "url": "https://github.com/thanatat-wong"
+    }
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977",
+  "pnpm": {
+    "overrides": {
+      "nanoid@<3.3.8": ">=3.3.8",
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0",
+      "@types/react": "^19.0.0",
+      "@types/react-dom": "^19.0.0",
+      "@radix-ui/react-dialog": "^1.1",
+      "vite": "npm:rolldown-vite@latest",
+      "cmdk": "^1.0"
+    },
+    "ignoredBuiltDependencies": [],
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "@swc/core",
+      "esbuild",
+      "prisma"
+    ]
+  },
+  "devDependencies": {
+    "turbo": "^2.5.3"
+  }
+}

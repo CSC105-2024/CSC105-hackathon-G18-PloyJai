@@ -1,0 +1,53 @@
+name: Backend Run Test
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - develop/*
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+      - develop/*
+    paths:
+      - 'backend/**'
+
+jobs:
+  build:
+    name: Build Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: backend
+
+      - name: Create .env file
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > backend/.env
+
+      - name: Generate Prisma Client
+        run: pnpm run prisma:generate
+        working-directory: backend
+
+      - name: Build Project
+        run: pnpm run build
+        working-directory: backend
