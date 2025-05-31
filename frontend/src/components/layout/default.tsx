@@ -3,12 +3,14 @@ import {BookOpen, Flower, Home, LogOut, Menu, PenTool, Settings, Trash2, User, X
 import {Link, Navigate, useLocation} from "react-router";
 import {useAuth} from "@/contexts/auth-context.tsx";
 import LoadingLayout from "@/components/layout/loading.tsx";
+import axiosInstance from "@/lib/axios.ts";
+import {toast} from "sonner";
 
 function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNode[]}) {
     const location = useLocation();
     const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const {user, isAuthenticated, isLoading} = useAuth();
+    const {user, isAuthenticated, isLoading, signOut} = useAuth();
 
     const navigation = [
         {
@@ -48,8 +50,15 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
         }
     ];
 
-    const handleSignOut = () => {
+    const handleSignOut = async () => {
+        try {
+            await signOut();
 
+            toast.success('Sign out successfully');
+        } catch (err) {
+            console.error('Sign out failed:', err);
+            toast.error('Failed to sign out. Please try again.');
+        }
     }
 
     if (isLoading) {

@@ -32,7 +32,6 @@ function Page() {
         neutralFadeRate: 1.0,
     });
 
-    // Update form when settings load
     React.useEffect(() => {
         if (settings) {
             setFormSettings(settings);
@@ -72,14 +71,11 @@ function Page() {
                 newPassword,
             };
 
-            console.log('Sending change password payload:', payload);
-
             const response = await axiosInstance.post('/account/security', payload);
 
             if (response.data.success) {
                 toast.success(response.data.message || 'Password changed successfully');
 
-                // Reset fields + close modal
                 setCurrentPassword('');
                 setNewPassword('');
                 setConfirmPassword('');
@@ -99,9 +95,6 @@ function Page() {
     const handleDeleteAccount = async () => {
         try {
             const response = await axiosInstance.delete('/account');
-
-            console.log('DELETE /account response:', response.data);
-
             if (response.data.success) {
                 toast.success('Account deleted successfully');
                 window.location.href = '/';
