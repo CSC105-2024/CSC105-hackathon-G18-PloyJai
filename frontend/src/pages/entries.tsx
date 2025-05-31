@@ -136,7 +136,6 @@ function Page() {
 
     const handleEntryView = async (entry: DiaryEntry) => {
         if (entry.isFullyFaded) return;
-
         
         if (entry.currentOpacity <= 0.3) {
             setShowWarning(true);

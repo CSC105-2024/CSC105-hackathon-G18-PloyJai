@@ -5,7 +5,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, useRoutes } from "react-router";
 import routes from "~react-pages";
 import { Toaster } from "./components/ui/sonner";
-import { ModalProvider } from "./providers/modal";
 import { AuthProvider } from "@/contexts/auth-context.tsx";
 import LoadingLayout from "@/components/layout/loading.tsx";
 import ErrorLayout from "@/components/layout/error.tsx";
@@ -26,7 +25,6 @@ export const App = () => {
     <Suspense fallback={<LoadingLayout />}>
       {PageContent}
       <Toaster richColors={true} theme="light" />
-      <ModalProvider />
     </Suspense>
     </AuthProvider>
   );
