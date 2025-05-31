@@ -240,7 +240,7 @@ function Page() {
                                     Watch your emotions slowly transform into beauty
                                 </p>
                             </div>
-                            <div className="flex items-center gap-4">
+                            <div className="flex max-md:justify-between md:items-center gap-4">
                                 <button
                                     onClick={async () => {
                                         await refetch();
@@ -352,7 +352,7 @@ function Page() {
 
                                     <div className="p-6">
                                         {/* Header */}
-                                        <div className="flex items-start justify-between mb-4">
+                                        <div className="flex flex-col md:flex-row gap-4 items-start justify-between mb-4">
                                             <div className="flex items-center gap-4">
                                                 <div
                                                     className={`relative w-14 h-14 rounded-full flex items-center justify-center shadow-lg ${
@@ -380,7 +380,7 @@ function Page() {
                                                     <h3 className="text-lg font-semibold text-slate-800">
                                                         {emotion.name}
                                                     </h3>
-                                                    <div className="flex items-center gap-3 text-sm text-slate-600">
+                                                    <div className="flex flex-col md:flex-row md:items-center gap-3 text-sm text-slate-600">
                                                         <div className="flex items-center gap-1">
                                                             <Calendar size={14}/>
                                                             {getTimeAgo(entry.createdAt)}

@@ -157,7 +157,7 @@ function Page() {
                     <div className="space-y-8">
                         {/* Fade Rate Settings */}
                         <div className="bg-white/60 backdrop-blur-sm rounded-3xl border border-indigo-200 p-8">
-                            <div className="flex items-center gap-3 mb-6">
+                            <div className="flex flex-col md:flex-row items-center gap-3 mb-6">
                                 <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
                                     <Clock size={24} className="text-indigo-600" />
                                 </div>
@@ -173,8 +173,8 @@ function Page() {
                                     const value = formSettings[settingKey as keyof Settings] as number || 1.0;
 
                                     return (
-                                        <div key={key} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
-                                            <div className="flex items-center gap-4">
+                                        <div key={key} className="flex flex-col md:flex-row max-md:flex-1 md:items-center justify-between p-4 bg-gray-50 rounded-2xl gap-4">
+                                            <div className="flex flex-col md:flex-row items-center gap-4">
                                                 <span className="text-2xl">{emotion.icon}</span>
                                                 <div>
                                                     <div className="font-medium text-gray-800">{emotion.name}</div>
@@ -208,7 +208,7 @@ function Page() {
 
                         {/* Account Management */}
                         <div className="bg-white/60 backdrop-blur-sm rounded-3xl border border-red-200 p-8">
-                            <div className="flex items-center gap-3 mb-6">
+                            <div className="flex flex-col md:flex-row items-center gap-3 mb-6">
                                 <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                     <User size={24} className="text-red-600" />
                                 </div>
@@ -261,7 +261,7 @@ function Page() {
 
                 {/* Edit Confirmation Modal */}
                 {showEditConfirm && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
                         <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200">
                             <div className="text-center mb-6">
                                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -293,7 +293,7 @@ function Page() {
 
                 {/* Delete Confirmation Modal */}
                 {showDeleteConfirm && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
                         <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200">
                             <div className="text-center mb-6">
                                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">

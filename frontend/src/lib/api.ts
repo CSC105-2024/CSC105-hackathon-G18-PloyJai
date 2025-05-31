@@ -10,7 +10,7 @@ class ApiClient {
         message: string
     }> {
         const response = await axiosInstance.post('/entries', {content, title});
-        return response.data;
+        return response.data.entry;
     }
 
     async getEntries(filter?: 'all' | 'fading' | 'transformed'): Promise<{ entries: DiaryEntry[] }> {

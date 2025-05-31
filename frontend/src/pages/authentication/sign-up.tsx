@@ -74,7 +74,7 @@ function Page() {
         <div className="flex min-h-screen flex-col items-center justify-center bg-white">
             <div className="mx-auto w-full max-w-xl space-y-16 px-4 py-8">
                 <section className="flex flex-col items-center gap-6 text-center">
-                    <h1 className="text-6xl">PloyJai</h1>
+                    <h1 className="text-6xl bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">PloyJai</h1>
                     <p className="text-lg">Write to release, forget to Heal.</p>
                     <div className="flex w-full flex-row items-center justify-center gap-4">
                         <Link

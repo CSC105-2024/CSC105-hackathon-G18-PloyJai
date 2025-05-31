@@ -63,7 +63,7 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-[calc(100svh+56.67px)] md:min-h-screen bg-gray-50">
             {/* Desktop Sidebar */}
             <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 lg:bg-white lg:border-r lg:border-gray-200">
                 <div className="flex-1 flex flex-col min-h-0">
@@ -209,7 +209,7 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
             )}
 
             {/* Main content */}
-            <div className="lg:pl-64 flex flex-col flex-1">
+            <div className="max-md:pb-16 lg:pl-64 flex flex-col flex-1">
                 <main className="flex-1">
                     {children}
                 </main>
@@ -239,7 +239,7 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
             </div>
 
             {showSignOutConfirm && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
                     <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200">
                         <div className="text-center mb-6">
                             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">

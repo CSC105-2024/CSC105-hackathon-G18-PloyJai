@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Send, Heart, Cloud, Zap, Sun, Droplets, Sparkles, Star } from 'lucide-react';
+import React, {useState, useEffect} from 'react';
+import {Send, Heart, Cloud, Zap, Sun, Droplets, Sparkles, Star} from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
-import { useCreateEntry } from '@/hooks/use-create-entries';
-import { toast } from 'sonner';
+import {useCreateEntry} from '@/hooks/use-create-entries';
 
 function Page() {
     const [content, setContent] = useState('');
@@ -19,16 +18,16 @@ function Page() {
         reset
     } = useCreateEntry();
 
-    
+
     const emotions = {
-        JOY: { name: 'Joy', icon: Sun, color: '#FFD700', bgColor: 'bg-yellow-100' },
-        SADNESS: { name: 'Sadness', icon: Droplets, color: '#87CEEB', bgColor: 'bg-blue-100' },
-        ANXIETY: { name: 'Anxiety', icon: Zap, color: '#FFB347', bgColor: 'bg-orange-100' },
-        ANGER: { name: 'Anger', icon: Cloud, color: '#FF6B6B', bgColor: 'bg-red-100' },
-        LOVE: { name: 'Love', icon: Heart, color: '#FFB6C1', bgColor: 'bg-pink-100' },
-        FEAR: { name: 'Fear', icon: Sparkles, color: '#8B5CF6', bgColor: 'bg-purple-100' },
-        HOPE: { name: 'Hope', icon: Star, color: '#06B6D4', bgColor: 'bg-cyan-100' },
-        NEUTRAL: { name: 'Peaceful', icon: Sparkles, color: '#98FB98', bgColor: 'bg-green-100' }
+        JOY: {name: 'Joy', icon: Sun, color: '#FFD700', bgColor: 'bg-yellow-100'},
+        SADNESS: {name: 'Sadness', icon: Droplets, color: '#87CEEB', bgColor: 'bg-blue-100'},
+        ANXIETY: {name: 'Anxiety', icon: Zap, color: '#FFB347', bgColor: 'bg-orange-100'},
+        ANGER: {name: 'Anger', icon: Cloud, color: '#FF6B6B', bgColor: 'bg-red-100'},
+        LOVE: {name: 'Love', icon: Heart, color: '#FFB6C1', bgColor: 'bg-pink-100'},
+        FEAR: {name: 'Fear', icon: Sparkles, color: '#8B5CF6', bgColor: 'bg-purple-100'},
+        HOPE: {name: 'Hope', icon: Star, color: '#06B6D4', bgColor: 'bg-cyan-100'},
+        NEUTRAL: {name: 'Peaceful', icon: Sparkles, color: '#98FB98', bgColor: 'bg-green-100'}
     };
 
     useEffect(() => {
@@ -42,7 +41,7 @@ function Page() {
             await createEntry(content, title || undefined);
             setShowSuccess(true);
 
-            
+
             setTimeout(() => {
                 setContent('');
                 setTitle('');
@@ -113,7 +112,8 @@ function Page() {
 
                     {/* Success Message */}
                     {showSuccess && (
-                        <div className="mb-6 p-6 bg-green-100 border border-green-300 rounded-2xl text-center animate-fade-in">
+                        <div
+                            className="mb-6 p-6 bg-green-100 border border-green-300 rounded-2xl text-center animate-fade-in">
                             <div className="text-4xl mb-2">🌱</div>
                             <h3 className="text-xl font-bold text-green-800 mb-2">
                                 Successfully Released!
@@ -123,7 +123,8 @@ function Page() {
                             </p>
                             {emotion && lastAnalysis && (
                                 <div className="text-sm text-green-700 bg-green-50 rounded-lg p-3 mt-3">
-                                    <strong>AI Analysis:</strong> {emotions[emotion!]?.name} detected with {Math.round(lastAnalysis.intensity * 100)}% intensity
+                                    <strong>AI Analysis:</strong> {emotions[emotion!]?.name} detected
+                                    with {Math.round(lastAnalysis.intensity * 100)}% intensity
                                     (Confidence: {Math.round(lastAnalysis.confidence * 100)}%)
                                 </div>
                             )}
@@ -137,18 +138,20 @@ function Page() {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="Entry title (optional)..."
-                            className="w-full p-4 bg-white/60 backdrop-blur-sm border border-purple-200 rounded-2xl text-gray-800 placeholder-gray-400 text-lg focus:outline-none focus:ring-2 focus:ring-purple-300"
+                            className="w-full p-4 bg-white/60 backdrop-blur-sm border border-purple-200 rounded-2xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300"
                             disabled={isWriting}
                         />
                     </div>
 
                     {/* Writing Area */}
-                    <div className="bg-white/60 backdrop-blur-sm rounded-3xl border border-purple-200 overflow-hidden mb-6 shadow-lg">
+                    <div
+                        className="bg-white/60 backdrop-blur-sm rounded-3xl border border-purple-200 overflow-hidden mb-6 shadow-lg">
                         <div className="p-6 border-b border-purple-100">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-12 h-12 ${emotionBg} rounded-full flex items-center justify-center transition-all duration-500`}>
-                                        <EmotionIcon size={24} color={emotionColor} />
+                                    <div
+                                        className={`w-12 h-12 ${emotionBg} rounded-full flex items-center justify-center transition-all duration-500`}>
+                                        <EmotionIcon size={24} color={emotionColor}/>
                                     </div>
                                     <div>
                                         <div className="font-medium text-gray-800">
@@ -162,7 +165,8 @@ function Page() {
 
                                 {isWriting && (
                                     <div className="flex items-center gap-2 text-purple-600">
-                                        <div className="w-4 h-4 border-2 border-purple-300 border-t-purple-600 rounded-full animate-spin"></div>
+                                        <div
+                                            className="w-4 h-4 border-2 border-purple-300 border-t-purple-600 rounded-full animate-spin"></div>
                                         <span className="text-sm">Analyzing with AI...</span>
                                     </div>
                                 )}
@@ -174,7 +178,7 @@ function Page() {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 placeholder="Write what you want to release... Don't worry, these words will slowly fade away over time and transform into something beautiful in your garden. Let your emotions flow freely."
-                                className="w-full h-64 bg-transparent border-none outline-none resize-none text-gray-800 placeholder-gray-400 text-lg leading-relaxed"
+                                className="w-full h-64 bg-transparent border-none outline-none resize-none text-gray-800 placeholder-gray-400 leading-relaxed"
                                 disabled={isWriting}
                             />
                         </div>
@@ -182,10 +186,11 @@ function Page() {
 
                     {/* AI Emotion Analysis Preview */}
                     {emotion && lastAnalysis && (
-                        <div className="mb-6 p-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-gray-200 animate-fade-in">
+                        <div
+                            className="mb-6 p-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-gray-200 animate-fade-in">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <EmotionIcon size={20} color={emotionColor} />
+                                    <EmotionIcon size={20} color={emotionColor}/>
                                     <span className="text-gray-700">
                                         {emotions[emotion].name} will gradually fade in
                                     </span>
@@ -201,7 +206,9 @@ function Page() {
                             {/* AI Analysis Details */}
                             <div className="mt-3 p-3 bg-blue-50 rounded-xl border border-blue-200">
                                 <p className="text-blue-800 text-sm">
-                                    🤖 <strong>AI Analysis:</strong> Detected {emotions[emotion].name} with {Math.round(lastAnalysis.intensity * 100)}% intensity
+                                    🤖 <strong>AI
+                                    Analysis:</strong> Detected {emotions[emotion].name} with {Math.round(lastAnalysis.intensity * 100)}%
+                                    intensity
                                     (Confidence: {Math.round(lastAnalysis.confidence * 100)}%)
                                 </p>
                                 <p className="text-blue-700 text-xs mt-1">
@@ -228,12 +235,13 @@ function Page() {
                         >
                             {isWriting ? (
                                 <>
-                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                    <div
+                                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                                     Analyzing & Releasing...
                                 </>
                             ) : (
                                 <>
-                                    <Send size={20} />
+                                    <Send size={20}/>
                                     Release & Transform
                                 </>
                             )}
@@ -242,7 +250,8 @@ function Page() {
 
                     {/* Helper Tips */}
                     <div className="mt-8 text-center">
-                        <div className="inline-block p-6 bg-white/40 backdrop-blur-sm rounded-2xl border border-gray-200 max-w-2xl">
+                        <div
+                            className="inline-block p-6 bg-white/40 backdrop-blur-sm rounded-2xl border border-gray-200 max-w-2xl">
                             <h3 className="font-bold text-gray-800 mb-4 text-lg">
                                 💡 Tips for Therapeutic Writing
                             </h3>
@@ -251,7 +260,8 @@ function Page() {
                                 <p>• <strong>No judgment:</strong> Grammar and spelling don't matter here</p>
                                 <p>• <strong>Be honest:</strong> Express your true emotions without filters</p>
                                 <p>• <strong>Trust the AI:</strong> Our Gemini AI will understand your emotions</p>
-                                <p>• <strong>The paradox:</strong> The more painful the memory, the faster it transforms</p>
+                                <p>• <strong>The paradox:</strong> The more painful the memory, the faster it transforms
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -267,7 +277,7 @@ function Page() {
                                     const Icon = emotion.icon;
                                     return (
                                         <div key={key} className="flex items-center gap-2 p-3 rounded-xl bg-white/50">
-                                            <Icon size={16} color={emotion.color} />
+                                            <Icon size={16} color={emotion.color}/>
                                             <div>
                                                 <div className="font-medium text-gray-800 text-xs">{emotion.name}</div>
                                                 <div className="text-xs text-gray-600">

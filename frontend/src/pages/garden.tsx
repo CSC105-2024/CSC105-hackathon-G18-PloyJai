@@ -168,7 +168,7 @@ function Page() {
                 {/* Header */}
                 <div className="bg-white/80 backdrop-blur-sm border-b border-green-200">
                     <div className="max-w-6xl mx-auto px-4 py-6">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                             <div>
                                 <h1 className="text-3xl font-bold text-green-800 mb-2">
                                     Your Garden of Release
@@ -177,24 +177,26 @@ function Page() {
                                     Pain transforms into beauty • {plants.length} plants grown from healing
                                 </p>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <button
-                                    onClick={handleManualTransform}
-                                    disabled={cleanupLoading}
-                                    className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-600 rounded-lg hover:bg-purple-200 transition-colors disabled:opacity-50"
-                                >
-                                    <Wand2 size={16} className={cleanupLoading ? 'animate-spin' : ''}/>
-                                    {cleanupLoading ? 'Growing...' : 'Grow Plants'}
-                                </button>
-                                <button
-                                    onClick={handleRefresh}
-                                    className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-colors"
-                                    disabled={plantsLoading || statsLoading}
-                                >
-                                    <RefreshCw size={16}
-                                               className={(plantsLoading || statsLoading) ? 'animate-spin' : ''}/>
-                                    Refresh
-                                </button>
+                            <div className="flex flex-row-reverse md:flex-row items-center gap-4">
+                                <div className="flex flex-col md:flex-row gap-4">
+                                    <button
+                                        onClick={handleManualTransform}
+                                        disabled={cleanupLoading}
+                                        className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-600 rounded-lg hover:bg-purple-200 transition-colors disabled:opacity-50"
+                                    >
+                                        <Wand2 size={16} className={cleanupLoading ? 'animate-spin' : ''}/>
+                                        {cleanupLoading ? 'Growing...' : 'Grow Plants'}
+                                    </button>
+                                    <button
+                                        onClick={handleRefresh}
+                                        className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-colors"
+                                        disabled={plantsLoading || statsLoading}
+                                    >
+                                        <RefreshCw size={16}
+                                                   className={(plantsLoading || statsLoading) ? 'animate-spin' : ''}/>
+                                        Refresh
+                                    </button>
+                                </div>
                                 <div className="text-right">
                                     <div className="text-2xl font-bold text-green-700">
                                         {gardenStats.totalPlants} plants
@@ -321,7 +323,7 @@ function Page() {
                                 Write diary entries and let them fade away to grow beautiful plants.
                                 Each released emotion becomes something wonderful here.
                             </p>
-                            <div className="flex justify-center gap-4">
+                            <div className="flex flex-col md:flex-row justify-center gap-4">
                                 <a
                                     href="/write"
                                     className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
@@ -342,7 +344,7 @@ function Page() {
                 {/* Plant Detail Modal */}
                 {selectedPlant && (
                     <div
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
                         <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-green-200 shadow-2xl">
                             <div className="text-center mb-6">
                                 <div
@@ -360,7 +362,7 @@ function Page() {
                             </div>
 
                             <div className="space-y-4 mb-6">
-                                <div className="flex justify-between items-center p-3 bg-green-50 rounded-xl">
+                                <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-green-50 rounded-xl">
                                     <span className="text-green-700">Growth Stage</span>
                                     <div className="flex gap-1">
                                         {[1, 2, 3, 4, 5].map(stage => (
@@ -376,7 +378,7 @@ function Page() {
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-center p-3 bg-blue-50 rounded-xl">
+                                <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-blue-50 rounded-xl">
                                     <span className="text-blue-700 flex items-center gap-2">
                                         <Calendar size={16}/>
                                         Transformed
@@ -386,7 +388,7 @@ function Page() {
                                     </span>
                                 </div>
 
-                                <div className="flex justify-between items-center p-3 bg-purple-50 rounded-xl">
+                                <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-purple-50 rounded-xl">
                                     <span className="text-purple-700">Beauty Score</span>
                                     <div className="flex items-center gap-2">
                                         <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -403,7 +405,7 @@ function Page() {
 
                                 {/* Original entry info if available */}
                                 {selectedPlant.diaryEntry && (
-                                    <div className="flex justify-between items-center p-3 bg-amber-50 rounded-xl">
+                                    <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-3 bg-amber-50 rounded-xl">
                                         <span className="text-amber-700 flex items-center gap-2">
                                             <Eye size={16}/>
                                             Original Entry
