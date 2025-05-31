@@ -206,8 +206,8 @@ function Page() {
                             {/* AI Analysis Details */}
                             <div className="mt-3 p-3 bg-blue-50 rounded-xl border border-blue-200">
                                 <p className="text-blue-800 text-sm">
-                                    🤖 <strong>AI
-                                    Analysis:</strong> Detected {emotions[emotion].name} with {Math.round(lastAnalysis.intensity * 100)}%
+                                    <strong>AI
+                                        Analysis:</strong> Detected {emotions[emotion].name} with {Math.round(lastAnalysis.intensity * 100)}%
                                     intensity
                                     (Confidence: {Math.round(lastAnalysis.confidence * 100)}%)
                                 </p>
