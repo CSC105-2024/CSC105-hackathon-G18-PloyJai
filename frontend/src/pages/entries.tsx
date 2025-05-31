@@ -1,35 +1,44 @@
-import React, {useState} from 'react';
+import React, {type ForwardRefExoticComponent, type RefAttributes, useState} from 'react';
 import {
-    Clock,
-    Eye,
     Calendar,
+    Clock,
     Droplets,
+    Eye,
+    EyeOff,
     Flame,
-    Zap,
-    Sun,
     Heart,
+    Leaf,
+    type LucideProps,
+    RefreshCw,
     Sparkles,
     Star,
-    EyeOff,
+    Sun,
     Timer,
-    Leaf,
-    RefreshCw
+    Zap
 } from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
-import { apiClient } from '@/lib/api';
+import {apiClient} from '@/lib/api';
 import type {DiaryEntry} from '@/types'
 import {useEntries} from '@/hooks/use-entries.ts'
 import {useCleanup} from "@/hooks/use-cleanup.ts";
 
 function Page() {
     const [filter, setFilter] = useState<'all' | 'fading' | 'transformed'>('all');
-    const { entries, loading, error, refetch, setEntries } = useEntries(filter);
+    const {entries, loading, error, refetch, setEntries} = useEntries(filter);
     const [selectedEntry, setSelectedEntry] = useState<DiaryEntry | null>(null);
-    const { runCleanup, loading: cleanupLoading } = useCleanup();
+    const {runCleanup, loading: cleanupLoading} = useCleanup();
     const [showWarning, setShowWarning] = useState(false);
     const [actionLoading, setActionLoading] = useState<string | null>(null);
 
-    const emotions = {
+    const emotions: {
+        [key: string]: {
+            name: string,
+            icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>,
+            color: string,
+            bgGradient: string,
+            description: string,
+        }
+    } = {
         ANGER: {
             name: 'Anger',
             icon: Flame,
@@ -136,7 +145,7 @@ function Page() {
 
     const handleEntryView = async (entry: DiaryEntry) => {
         if (entry.isFullyFaded) return;
-        
+
         if (entry.currentOpacity <= 0.3) {
             setShowWarning(true);
             setTimeout(() => setShowWarning(false), 3000);
@@ -144,10 +153,10 @@ function Page() {
 
         try {
             setActionLoading(entry.id);
-            
+
             const response = await apiClient.getEntry(entry.id);
 
-            
+
             setEntries(prev => prev.map(e =>
                 e.id === entry.id ? response.entry : e
             ));
@@ -166,7 +175,7 @@ function Page() {
             setActionLoading(entryId);
             const response = await apiClient.accelerateFade(entryId);
 
-            
+
             setEntries(prev => prev.map(e =>
                 e.id === entryId ? response.entry : e
             ));
@@ -183,9 +192,11 @@ function Page() {
     if (loading) {
         return (
             <DefaultLayout>
-                <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+                <div
+                    className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
                     <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-indigo-300 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+                        <div
+                            className="w-16 h-16 border-4 border-indigo-300 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
                         <p className="text-slate-600">Loading your release journey...</p>
                     </div>
                 </div>
@@ -196,7 +207,8 @@ function Page() {
     if (error) {
         return (
             <DefaultLayout>
-                <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+                <div
+                    className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
                     <div className="text-center">
                         <div className="text-red-500 text-xl mb-4">❌</div>
                         <h3 className="text-xl font-bold text-slate-800 mb-2">Error Loading Entries</h3>
@@ -217,7 +229,7 @@ function Page() {
         <DefaultLayout>
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
                 {/* Header */}
-                <div className="bg-white/90 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-40">
+                <div className="bg-white/90 backdrop-blur-sm border-b border-slate-200">
                     <div className="max-w-6xl mx-auto px-4 py-6">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                             <div>
@@ -228,7 +240,7 @@ function Page() {
                                     Watch your emotions slowly transform into beauty
                                 </p>
                             </div>
-                            <div className="flex items-center gap-4">
+                            <div className="flex max-md:justify-between md:items-center gap-4">
                                 <button
                                     onClick={async () => {
                                         await refetch();
@@ -237,7 +249,7 @@ function Page() {
                                     className="flex items-center gap-2 px-3 py-2 bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-200 transition-colors"
                                     disabled={loading || cleanupLoading}
                                 >
-                                    <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+                                    <RefreshCw size={16} className={loading ? 'animate-spin' : ''}/>
                                     Refresh
                                 </button>
                                 <div className="text-right">
@@ -331,14 +343,17 @@ function Page() {
 
                                     {/* Loading Overlay */}
                                     {isLoading && (
-                                        <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-10">
-                                            <div className="w-8 h-8 border-2 border-indigo-300 border-t-indigo-600 rounded-full animate-spin"></div>
+                                        <div
+                                            className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-10">
+                                            <div
+                                                className="w-8 h-8 border-2 border-indigo-300 border-t-indigo-600 rounded-full animate-spin"></div>
                                         </div>
                                     )}
 
                                     <div className="p-6">
                                         {/* Header */}
-                                        <div className="flex items-start justify-between mb-4">
+                                        <div
+                                            className="flex flex-col md:flex-row gap-4 items-start justify-between mb-4">
                                             <div className="flex items-center gap-4">
                                                 <div
                                                     className={`relative w-14 h-14 rounded-full flex items-center justify-center shadow-lg ${
@@ -366,7 +381,8 @@ function Page() {
                                                     <h3 className="text-lg font-semibold text-slate-800">
                                                         {emotion.name}
                                                     </h3>
-                                                    <div className="flex items-center gap-3 text-sm text-slate-600">
+                                                    <div
+                                                        className="flex flex-col md:flex-row md:items-center gap-3 text-sm text-slate-600">
                                                         <div className="flex items-center gap-1">
                                                             <Calendar size={14}/>
                                                             {getTimeAgo(entry.createdAt)}
@@ -569,7 +585,8 @@ function Page() {
                                     >
                                         {actionLoading === selectedEntry.id ? (
                                             <>
-                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                <div
+                                                    className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                                                 Releasing...
                                             </>
                                         ) : (

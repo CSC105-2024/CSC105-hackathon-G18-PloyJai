@@ -1,10 +1,5 @@
-import React, {useState} from 'react';
-import {
-    Home,
-    PenTool,
-    BookOpen,
-    Flower,
-} from 'lucide-react';
+import React from 'react';
+import {BookOpen, Flower, PenTool,} from 'lucide-react';
 import {Link, Navigate} from "react-router";
 import DefaultLayout from "@/components/layout/default.tsx";
 import {useAuth} from "@/contexts/auth-context.tsx";

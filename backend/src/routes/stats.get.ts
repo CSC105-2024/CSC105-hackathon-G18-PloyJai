@@ -16,7 +16,6 @@ export default async function (c: Context<AppEnv>) {
             prisma.diaryEntry.count({ where: { userId, isFullyFaded: false } })
         ])
 
-        // Calculate days active (days since first entry)
         const firstEntry = await prisma.diaryEntry.findFirst({
             where: { userId },
             orderBy: { createdAt: 'asc' }

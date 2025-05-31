@@ -10,7 +10,6 @@ const signinSchema = z.object({
     password: z.string().min(1)
 });
 
-
 export const middleware = [
     zValidator("json", signinSchema)
 ];
@@ -25,10 +24,11 @@ export default async function (c: Context<AppEnv>) {
 
         return c.json({
             success: true,
-            message: 'Login successful',
+            message: 'Sign in successful',
             user: {
                 id: user.id,
-                email: user.email
+                email: user.email,
+                name: user.name
             }
         });
     } catch (error: any) {

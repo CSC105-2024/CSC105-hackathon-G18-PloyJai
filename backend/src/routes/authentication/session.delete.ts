@@ -7,6 +7,6 @@ export default function (c: Context<AppEnv>) {
 
     return c.json({
         success: true,
-        message: 'Logout successful'
+        message: 'Sign out successful'
     });
 }

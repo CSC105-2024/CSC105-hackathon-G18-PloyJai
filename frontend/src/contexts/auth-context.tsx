@@ -19,6 +19,7 @@ interface AuthContextType {
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (
+    name: string,
     email: string,
     password: string,
     rePassword: string,
@@ -65,6 +66,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const signUp = async (
+    name: string,
     email: string,
     password: string,
     rePassword: string,
@@ -72,6 +74,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setIsLoading(true);
     try {
       const response = await axiosInstance.post("/authentication/sign-up", {
+        name,
         email,
         password,
         rePassword,

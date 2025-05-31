@@ -16,10 +16,11 @@ export interface DiaryEntry {
 
 export interface GardenPlant {
     id: string;
-    type: string;
+    plantType: string;
     emotion: string;
     color: string;
     size: number;
+    beauty: number;
     positionX: number;
     positionY: number;
     growthStage: number;
@@ -28,6 +29,7 @@ export interface GardenPlant {
         emotion: string;
         createdAt: string;
         emotionScore: number;
+        transformedAt: string;
     };
 }
 
@@ -44,10 +46,10 @@ export interface Settings {
     sadnessFadeRate: number;
     anxietyFadeRate: number;
     joyFadeRate: number;
+    fearFadeRate: number;
     loveFadeRate: number;
+    hopeFadeRate: number;
     neutralFadeRate: number;
-    allowDataExport: boolean;
-    transformationNotification: boolean;
 }
 
 export interface EmotionAnalysis {

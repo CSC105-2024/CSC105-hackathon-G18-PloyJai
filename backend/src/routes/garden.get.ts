@@ -12,7 +12,6 @@ export default async function(c: Context<AppEnv>) {
         const prisma = getPrisma();
         const {id: userId} = c.get('user');
 
-        // Get fully faded entries that have been transformed into plants
         const transformedEntries = await prisma.diaryEntry.findMany({
             where: {
                 userId,
@@ -27,7 +26,6 @@ export default async function(c: Context<AppEnv>) {
         const plantsToCreate = []
         for (const entry of transformedEntries) {
             if (!entry.gardenPlant) {
-                // Determine plant type based on emotion
                 const plantType = {
                     JOY: 'FLOWER',
                     LOVE: 'FLOWER',
@@ -62,14 +60,12 @@ export default async function(c: Context<AppEnv>) {
             }
         }
 
-        // Create missing plants
         if (plantsToCreate.length > 0) {
             await prisma.gardenPlant.createMany({
                 data: plantsToCreate as GardenPlantCreateManyInput[]
             })
         }
 
-        // Fetch all plants
         const plants = await prisma.gardenPlant.findMany({
             where: { userId },
             include: {
