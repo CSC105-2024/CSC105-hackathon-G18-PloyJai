@@ -4,6 +4,7 @@ import {getPrisma} from "@/lib/prisma.js";
 const prisma = getPrisma();
 
 export type UserCreateInput = {
+    name: string;
     email: string;
     password: string;
 };
@@ -13,7 +14,7 @@ export type UserLoginInput = {
     password: string;
 };
 
-export const createUser = async ({ email, password }: UserCreateInput) => {
+export const createUser = async ({ name, email, password }: UserCreateInput) => {
     
     const existingUser = await prisma.user.findUnique({
         where: { email },
@@ -27,6 +28,7 @@ export const createUser = async ({ email, password }: UserCreateInput) => {
 
     const user = await prisma.user.create({
         data: {
+            name,
             email,
             password: hashedPassword,
             createdAt: new Date(),

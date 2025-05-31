@@ -6,6 +6,7 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 
 const signupSchema = z.object({
+    name: z.string().min(1),
     email: z.string().email(),
     password: z.string().min(8),
     rePassword: z.string().min(1)
@@ -14,7 +15,6 @@ const signupSchema = z.object({
     path: ["rePassword"]
 });
 
-
 export const middleware = [
     zValidator("json", signupSchema)
 ];
@@ -22,8 +22,8 @@ export const middleware = [
 export default async function (c: Context<AppEnv>) {
     try {
         // @ts-ignore
-        const { email, password } = c.req.valid("json");
-        const user = await createUser({ email, password });
+        const { name, email, password } = c.req.valid("json");
+        const user = await createUser({ name, email, password });
 
         await setAuthCookie(c, {id: user.id, email: user.email});
 
@@ -32,7 +32,8 @@ export default async function (c: Context<AppEnv>) {
             message: 'Account created successfully',
             user: {
                 id: user.id,
-                email: user.email
+                email: user.email,
+                name: user.name
             }
         });
     } catch (error: any) {

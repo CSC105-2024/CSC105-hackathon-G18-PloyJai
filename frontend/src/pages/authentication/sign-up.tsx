@@ -56,7 +56,7 @@ function Page() {
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         setIsLoading(true);
         try {
-            await signUp(data.email, data.password, data.rePassword);
+            await signUp(data.name, data.email, data.password, data.rePassword);
             toast.success("Account created successfully!");
             navigate("/");
         } catch (error: any) {

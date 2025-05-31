@@ -41,7 +41,6 @@ function Page() {
     defaultValues: {
       email: "",
       password: "",
-      name: "",
     },
   });
 
