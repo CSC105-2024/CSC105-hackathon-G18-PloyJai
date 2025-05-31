@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
-import {Clock, RectangleEllipsis, RefreshCw, Save, Trash2, User} from 'lucide-react';
+import React, { useState } from 'react';
+import { Save, User, Palette, Clock, Shield, Bell, Trash2, Download, RefreshCw, RectangleEllipsis, Pencil } from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
-import {useSettings} from '@/hooks/use-settings.ts';
-import {toast} from 'sonner';
+import { apiClient } from '@/lib/api';
+import { useSettings } from '@/hooks/use-settings.ts';
+import { toast } from 'sonner';
+import axiosInstance from '@/lib/axios.ts';
 import type {Settings} from "@/types";
 
 function Page() {
@@ -12,6 +14,11 @@ function Page() {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [saveError, setSaveError] = useState<string | null>(null);
+    const [newPassword, setNewPassword] = useState('');
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [isChangingPassword, setIsChangingPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
+
 
     // Local state for form values
     const [formSettings, setFormSettings] = useState<Settings>(settings || {
@@ -51,20 +58,61 @@ function Page() {
         setFormSettings(prev => ({...prev, [key]: value}));
     };
 
+    const handleChangePassword = async () => {
+        if (newPassword !== confirmPassword) {
+            toast.error('New password and confirm password do not match');
+            return;
+        }
+
+        try {
+            setIsChangingPassword(true);
+
+            const payload = {
+                currentPassword,
+                newPassword,
+            };
+
+            console.log('Sending change password payload:', payload);
+
+            const response = await axiosInstance.post('/account/security', payload);
+
+            if (response.data.success) {
+                toast.success(response.data.message || 'Password changed successfully');
+
+                // Reset fields + close modal
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+                setShowEditConfirm(false);
+            } else {
+                toast.error(response.data.error || 'Failed to change password');
+            }
+        } catch (err) {
+            console.error('Change password error:', err);
+            toast.error('Failed to change password. Please try again.');
+        } finally {
+            setIsChangingPassword(false);
+        }
+    };
+
+
     const handleDeleteAccount = async () => {
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/account`, {
-                method: 'DELETE',
-                credentials: 'include',
-            });
+            const response = await axiosInstance.delete('/account');
 
-            window.location.href = '/';
+            console.log('DELETE /account response:', response.data);
+
+            if (response.data.success) {
+                toast.success('Account deleted successfully');
+                window.location.href = '/';
+            } else {
+                toast.error(response.data.message || 'Failed to delete account. Please try again.');
+            }
         } catch (err) {
             console.error('Account deletion failed:', err);
             toast.error('Failed to delete account. Please try again.');
         }
     };
-
     const emotions = {
         anger: {name: 'Anger', icon: '🔥', description: 'Fades quickly to reduce pain'},
         sadness: {name: 'Sadness', icon: '💧', description: 'Moderate fade for healing time'},
@@ -266,19 +314,58 @@ function Page() {
 
                 {/* Edit Confirmation Modal */}
                 {showEditConfirm && (
-                    <div
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
-                        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200">
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-orange-200 shadow-lg animate-fade-in">
                             <div className="text-center mb-6">
-                                <div
-                                    className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Trash2 size={32} className="text-red-600"/>
+                                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Pencil size={32} className="text-orange-600" />
                                 </div>
-                                <h3 className="text-xl font-bold text-red-800 mb-2">Confirm Account Deletion</h3>
-                                <p className="text-red-600">
-                                    This action cannot be undone. Your entire garden and all entries will be permanently
-                                    deleted.
+                                <h3 className="text-xl font-bold text-orange-800 mb-2">Confirm Edit Changes</h3>
+                                <p className="text-orange-600 mb-4">
+                                    Are you sure you want to apply these changes? This action will update your settings and password.
                                 </p>
+
+                                {/* ช่อง Current Password */}
+                                <div className="text-left mb-3">
+                                    <label className="block font-medium text-gray-700 mb-1">
+                                        Current Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        value={currentPassword}
+                                        onChange={(e) => setCurrentPassword(e.target.value)}
+                                        placeholder="Enter current password"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+                                    />
+                                </div>
+
+                                {/* ช่อง New Password */}
+                                <div className="text-left mb-3">
+                                    <label className="block font-medium text-gray-700 mb-1">
+                                        New Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        placeholder="Enter new password"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+                                    />
+                                </div>
+
+                                {/* ช่อง Confirm New Password */}
+                                <div className="text-left">
+                                    <label className="block font-medium text-gray-700 mb-1">
+                                        Confirm New Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        placeholder="Confirm new password"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+                                    />
+                                </div>
                             </div>
 
                             <div className="flex gap-3">
@@ -289,15 +376,16 @@ function Page() {
                                     Cancel
                                 </button>
                                 <button
-                                    onClick={handleDeleteAccount}
-                                    className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-colors"
+                                    onClick={handleChangePassword}
+                                    className="flex-1 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl transition-colors"
                                 >
-                                    Delete Account
+                                    Confirm Edit
                                 </button>
                             </div>
                         </div>
                     </div>
                 )}
+
 
                 {/* Delete Confirmation Modal */}
                 {showDeleteConfirm && (
@@ -334,7 +422,7 @@ function Page() {
                     </div>
                 )}
             </div>
-        </DefaultLayout>
+        </DefaultLayout >
     );
 };
 
