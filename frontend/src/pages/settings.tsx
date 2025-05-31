@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, User, Palette, Clock, Shield, Bell, Trash2, Download, RefreshCw } from 'lucide-react';
+import {Save, User, Palette, Clock, Shield, Bell, Trash2, Download, RefreshCw, RectangleEllipsis} from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
 import { apiClient } from '@/lib/api';
 import {useSettings} from '@/hooks/use-settings.ts';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 function Page() {
     const { settings, loading, error, updateSettings, refetch } = useSettings();
     const [showSaveSuccess, setShowSaveSuccess] = useState(false);
+    const [showEditConfirm, setShowEditConfirm] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [saveError, setSaveError] = useState<string | null>(null);
@@ -18,7 +19,9 @@ function Page() {
         sadnessFadeRate: 1.5,
         anxietyFadeRate: 1.8,
         joyFadeRate: 0.3,
+        fearFadeRate: 0.3,
         loveFadeRate: 0.2,
+        hopeFadeRate: 0.2,
         neutralFadeRate: 1.0,
     });
 
@@ -48,45 +51,13 @@ function Page() {
         setFormSettings(prev => ({ ...prev, [key]: value }));
     };
 
-    const handleToggleChange = (key: string, value: boolean) => {
-        setFormSettings(prev => ({ ...prev, [key]: value }));
-    };
-
-    const handleDownloadData = async () => {
-        try {
-            // This would trigger a data export from the backend
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/account/export-data`, {
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `ployjai-data-${new Date().toISOString().split('T')[0]}.json`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-            } else {
-                throw new Error('Failed to download data');
-            }
-        } catch (err) {
-            console.error('Download failed:', err);
-            toast.error('Failed to download data. Please try again.');
-        }
-    };
-
     const handleDeleteAccount = async () => {
         try {
-            // This would call a delete account endpoint
             await fetch(`${import.meta.env.VITE_API_URL}/account`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
 
-            // Redirect to home or login page after deletion
             window.location.href = '/';
         } catch (err) {
             console.error('Account deletion failed:', err);
@@ -99,7 +70,9 @@ function Page() {
         sadness: { name: 'Sadness', icon: '💧', description: 'Moderate fade for healing time' },
         anxiety: { name: 'Anxiety', icon: '⚡', description: 'Fades fairly fast for peace of mind' },
         joy: { name: 'Joy', icon: '☀️', description: 'Lasts longest to preserve good memories' },
+        fear: { name: 'Fear', icon: '👻', description: 'Fades fast to get away from bad memories' },
         love: { name: 'Love', icon: '💖', description: 'Endures long to keep warmth' },
+        hope: { name: 'Hope', icon: '🕯️', description: 'Faithful fade to make wish becomes true' },
         neutral: { name: 'Peaceful', icon: '✨', description: 'Natural balanced fade' }
     };
 
@@ -240,11 +213,18 @@ function Page() {
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-gray-800">Account Management</h2>
-                                    <p className="text-gray-600">Download your data or delete your account</p>
+                                    <p className="text-gray-600">Edit or delete your account</p>
                                 </div>
                             </div>
 
                             <div className="space-y-4">
+                                <button
+                                    onClick={() => setShowEditConfirm(true)}
+                                    className="w-full p-4 bg-red-50 hover:bg-red-100 border border-red-200 rounded-2xl flex items-center justify-center gap-3 transition-colors"
+                                >
+                                    <RectangleEllipsis size={20} className="text-amber-600" />
+                                    <span className="font-medium text-amber-800">Change Password</span>
+                                </button>
                                 <button
                                     onClick={() => setShowDeleteConfirm(true)}
                                     className="w-full p-4 bg-red-50 hover:bg-red-100 border border-red-200 rounded-2xl flex items-center justify-center gap-3 transition-colors"
@@ -277,6 +257,38 @@ function Page() {
                         </div>
                     </div>
                 </div>
+
+                {/* Edit Confirmation Modal */}
+                {showEditConfirm && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200">
+                            <div className="text-center mb-6">
+                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Trash2 size={32} className="text-red-600" />
+                                </div>
+                                <h3 className="text-xl font-bold text-red-800 mb-2">Confirm Account Deletion</h3>
+                                <p className="text-red-600">
+                                    This action cannot be undone. Your entire garden and all entries will be permanently deleted.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setShowEditConfirm(false)}
+                                    className="flex-1 py-3 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-xl transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleDeleteAccount}
+                                    className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-colors"
+                                >
+                                    Delete Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Delete Confirmation Modal */}
                 {showDeleteConfirm && (

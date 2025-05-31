@@ -18,7 +18,7 @@ function Page() {
         reset
     } = useCreateEntry();
 
-    // Emotion options with English names and colors
+    
     const emotions = {
         JOY: { name: 'Joy', icon: Sun, color: '#FFD700', bgColor: 'bg-yellow-100' },
         SADNESS: { name: 'Sadness', icon: Droplets, color: '#87CEEB', bgColor: 'bg-blue-100' },
@@ -41,7 +41,7 @@ function Page() {
             await createEntry(content, title || undefined);
             setShowSuccess(true);
 
-            // Reset form after success
+            
             setTimeout(() => {
                 setContent('');
                 setTitle('');
@@ -50,7 +50,6 @@ function Page() {
             }, 3000);
 
         } catch (err) {
-            // Error is handled by the hook
             console.error('Failed to create entry:', err);
         }
     };

@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
-import {BookOpen, Flower, Home, LogOut, Menu, PenTool, Settings, User, X} from "lucide-react";
+import {BookOpen, Flower, Home, LogOut, Menu, PenTool, Settings, Trash2, User, X} from "lucide-react";
 import {Link, Navigate, useLocation} from "react-router";
 import {useAuth} from "@/contexts/auth-context.tsx";
 import LoadingLayout from "@/components/layout/loading.tsx";
-import { useSignOutOverlay } from '@/overlay/authentication/session';
 
 function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNode[]}) {
     const location = useLocation();
+    const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const {user, isAuthenticated, isLoading} = useAuth();
-    const {open: openSignOutOverlay} = useSignOutOverlay();
 
     const navigation = [
         {
@@ -48,6 +47,10 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
             description: 'Customize experience'
         }
     ];
+
+    const handleSignOut = () => {
+
+    }
 
     if (isLoading) {
         return <LoadingLayout/>;
@@ -112,7 +115,7 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
 
                     {/* Logout */}
                     <div className="flex-shrink-0 p-4 border-t border-gray-200">
-                        <button onClick={openSignOutOverlay} className="group flex items-center px-2 py-2 text-sm font-medium rounded-lg w-full text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <button onClick={() => setShowSignOutConfirm(true)} className="group flex items-center px-2 py-2 text-sm font-medium rounded-lg w-full text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
                             <LogOut className="mr-3 flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
                             Sign Out
                         </button>
@@ -196,7 +199,7 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
 
                         {/* Mobile Logout */}
                         <div className="p-4 border-t border-gray-200">
-                            <button onClick={openSignOutOverlay} className="group flex items-center px-2 py-2 text-sm font-medium rounded-lg w-full text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                            <button onClick={() => setShowSignOutConfirm(true)} className="group flex items-center px-2 py-2 text-sm font-medium rounded-lg w-full text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
                                 <LogOut className="mr-3 flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
                                 Sign Out
                             </button>
@@ -234,6 +237,37 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
                     })}
                 </div>
             </div>
+
+            {showSignOutConfirm && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-red-200">
+                        <div className="text-center mb-6">
+                            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <LogOut size={32} className="text-amber-600" />
+                            </div>
+                            <h3 className="text-xl font-bold text-amber-800 mb-2">You are about to be Sign Out</h3>
+                            <p className="text-amber-600">
+                                Your entire garden and all entries will be still staying with us.
+                            </p>
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setShowSignOutConfirm(false)}
+                                className="flex-1 py-3 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-xl transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleSignOut}
+                                className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-xl transition-colors"
+                            >
+                                Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -77,7 +77,8 @@ export default async function(c: Context<AppEnv>) {
                     select: {
                         emotion: true,
                         createdAt: true,
-                        emotionScore: true
+                        emotionScore: true,
+                        transformedAt: true,
                     }
                 }
             }

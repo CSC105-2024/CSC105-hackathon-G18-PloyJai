@@ -137,7 +137,7 @@ function Page() {
     const handleEntryView = async (entry: DiaryEntry) => {
         if (entry.isFullyFaded) return;
 
-        // Show warning for entries that are very faded
+        
         if (entry.currentOpacity <= 0.3) {
             setShowWarning(true);
             setTimeout(() => setShowWarning(false), 3000);
@@ -145,10 +145,10 @@ function Page() {
 
         try {
             setActionLoading(entry.id);
-            // Call backend to view entry (this will increment view count and update opacity)
+            
             const response = await apiClient.getEntry(entry.id);
 
-            // Update the entries list with the new data
+            
             setEntries(prev => prev.map(e =>
                 e.id === entry.id ? response.entry : e
             ));
@@ -167,7 +167,7 @@ function Page() {
             setActionLoading(entryId);
             const response = await apiClient.accelerateFade(entryId);
 
-            // Update the entries list
+            
             setEntries(prev => prev.map(e =>
                 e.id === entryId ? response.entry : e
             ));

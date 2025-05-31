@@ -11,11 +11,6 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  gardenStats: {
-    totalEntries: number,
-    totalPlants: number,
-    daysActive: number
-  }
 }
 
 interface AuthContextType {

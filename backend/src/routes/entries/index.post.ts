@@ -16,15 +16,9 @@ export default async function(c: Context<AppEnv>) {
             return c.json({ error: 'Content is required' }, 400)
         }
 
-        // Analyze emotion using Gemini
-        console.log('Analyzing emotion for:', content.substring(0, 50) + '...')
         const emotionAnalysis = await analyzeEmotion(content)
-        console.log('Emotion analysis result:', emotionAnalysis)
-
-        // Calculate fade rate
         const fadeRate = calculateFadeRate(emotionAnalysis.emotion, emotionAnalysis.intensity)
 
-        // Create diary entry
         const entry = await prisma.diaryEntry.create({
             data: {
                 userId,

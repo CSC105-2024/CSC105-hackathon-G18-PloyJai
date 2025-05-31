@@ -88,7 +88,9 @@ model FadeSettings {
   sadnessFadeRate Float @default(1.5)
   anxietyFadeRate Float @default(1.8)
   joyFadeRate     Float @default(0.3)
+  fearFadeRate    Float @default(0.6)
   loveFadeRate    Float @default(0.2)
+  hopeFadeRate    Float @default(0.4)
   neutralFadeRate Float @default(1.0)
 
   createdAt DateTime @default(now())

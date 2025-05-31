@@ -33,14 +33,10 @@ export function useGardenWithCleanup() {
     const gardenResult = useGarden();
     const { runCleanup } = useCleanup();
 
-    // Auto cleanup and refresh garden when plants are loaded
     useEffect(() => {
-        if (gardenResult.plants.length >= 0) { // Check even if 0 plants
-            // Always try cleanup to check for new transformations
+        if (gardenResult.plants.length >= 0) {
             runCleanup().then((result) => {
                 if (result.updatedEntries > 0) {
-                    console.log(`Garden auto-cleanup: ${result.updatedEntries} new plants created`);
-                    // Refetch garden after new plants are created
                     gardenResult.refetch();
                 }
             }).catch(console.error);

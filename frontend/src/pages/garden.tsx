@@ -19,7 +19,6 @@ function Page() {
         gardenBeauty: 0
     });
 
-    // Update garden stats when data loads
     useEffect(() => {
         if (stats) {
             setGardenStats({
@@ -30,16 +29,12 @@ function Page() {
         }
     }, [stats]);
 
-    // Refresh both garden and stats, and run cleanup
     const handleRefresh = async () => {
         try {
-            // Run cleanup first to transform any ready entries
             await runCleanup();
-            // Then refresh both garden and stats
             await Promise.all([refetchGarden(), refetchStats()]);
         } catch (error) {
             console.error('Refresh failed:', error);
-            // Still try to refresh even if cleanup fails
             await Promise.all([refetchGarden(), refetchStats()]);
         }
     };
@@ -47,23 +42,21 @@ function Page() {
     const handleManualTransform = async () => {
         try {
             const result = await runCleanup();
-            console.log('Manual cleanup result:', result);
 
-            // Refresh garden after cleanup
             await Promise.all([refetchGarden(), refetchStats()]);
 
             if (result.updatedEntries > 0) {
-                toast.success(`✨ Amazing! ${result.updatedEntries} new plants have grown in your garden!`);
+                toast.success(`Amazing! ${result.updatedEntries} new plants have grown in your garden!`);
             } else {
-                toast.info('🌱 No entries are ready for transformation yet. Keep writing and letting go!');
+                toast.info('No entries are ready for transformation yet. Keep writing and letting go!');
             }
         } catch (err) {
             console.error('Manual transform failed:', err);
-            toast.error('❌ Transformation failed. Please try again.');
+            toast.error('Transformation failed. Please try again.');
         }
     };
 
-    // Plant component renderer
+    
     const PlantIcon = ({ plant }: { plant: GardenPlant }) => {
         const baseSize = 24 * plant.size;
         const opacity = Math.min(0.3 + (plant.growthStage * 0.15), 1);
@@ -96,7 +89,7 @@ function Page() {
         }
     };
 
-    // Get plant type display name
+    
     const getPlantTypeName = (type: string, emotion: string) => {
         const names = {
             FLOWER: emotion === 'JOY' ? '🌸 Flower of Happiness' : '🌺 Flower of Love',
@@ -109,7 +102,7 @@ function Page() {
         return names[type as keyof typeof names] || '🌱 Beautiful Plant';
     };
 
-    // Get emotion display name
+    
     const getEmotionName = (emotion: string) => {
         const emotions = {
             JOY: 'Joy',
@@ -124,7 +117,7 @@ function Page() {
         return emotions[emotion as keyof typeof emotions] || emotion;
     };
 
-    // Format date for display
+    
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -373,7 +366,7 @@ function Page() {
                                         Transformed
                                     </span>
                                     <span className="text-blue-600 font-medium">
-                                        {formatDate(selectedPlant.transformedDate)}
+                                        {formatDate(selectedPlant.diaryEntry.transformedAt)}
                                     </span>
                                 </div>
 

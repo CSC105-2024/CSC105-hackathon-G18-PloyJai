@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
     Home,
     PenTool,
@@ -8,13 +8,22 @@ import {
 import {Link, Navigate} from "react-router";
 import DefaultLayout from "@/components/layout/default.tsx";
 import {useAuth} from "@/contexts/auth-context.tsx";
+import {useStats} from "@/hooks/use-stats.ts";
+import LoadingLayout from '@/components/layout/loading';
 
 function Page() {
-    const { user } = useAuth();
+    const {user, isLoading: isAuthLoading} = useAuth();
+    const {stats, loading: isStatsLoading} = useStats();
 
-    if (!user) {
+    if (isAuthLoading || isStatsLoading) {
         return (
-            <Navigate to="/authentication/" />
+            <LoadingLayout/>
+        )
+    }
+
+    if (!isAuthLoading && !user) {
+        return (
+            <Navigate to="/authentication/sign-in"/>
         );
     }
 
@@ -40,37 +49,39 @@ function Page() {
 
                 {/* Stats Overview */}
                 <div className="max-w-6xl mx-auto px-4 py-12">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                        <div
-                            className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-purple-200 text-center transform hover:scale-105 transition-all duration-300">
-                            <div className="text-4xl mb-4">📝</div>
-                            <div className="text-3xl font-bold text-purple-800 mb-2">
-                                {user.gardenStats.totalEntries}
+                    {stats && (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                            <div
+                                className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-purple-200 text-center transform hover:scale-105 transition-all duration-300">
+                                <div className="text-4xl mb-4">📝</div>
+                                <div className="text-3xl font-bold text-purple-800 mb-2">
+                                    {stats?.totalEntries}
+                                </div>
+                                <div className="text-purple-600">Entries Written</div>
+                                <div className="text-sm text-purple-500 mt-1">Emotions released</div>
                             </div>
-                            <div className="text-purple-600">Entries Written</div>
-                            <div className="text-sm text-purple-500 mt-1">Emotions released</div>
-                        </div>
 
-                        <div
-                            className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-green-200 text-center transform hover:scale-105 transition-all duration-300">
-                            <div className="text-4xl mb-4">🌱</div>
-                            <div className="text-3xl font-bold text-green-800 mb-2">
-                                {user.gardenStats.totalPlants}
+                            <div
+                                className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-green-200 text-center transform hover:scale-105 transition-all duration-300">
+                                <div className="text-4xl mb-4">🌱</div>
+                                <div className="text-3xl font-bold text-green-800 mb-2">
+                                    {stats?.totalPlants}
+                                </div>
+                                <div className="text-green-600">Garden Plants</div>
+                                <div className="text-sm text-green-500 mt-1">Pain transformed to beauty</div>
                             </div>
-                            <div className="text-green-600">Garden Plants</div>
-                            <div className="text-sm text-green-500 mt-1">Pain transformed to beauty</div>
-                        </div>
 
-                        <div
-                            className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-blue-200 text-center transform hover:scale-105 transition-all duration-300">
-                            <div className="text-4xl mb-4">💙</div>
-                            <div className="text-3xl font-bold text-blue-800 mb-2">
-                                {user.gardenStats.daysActive}
+                            <div
+                                className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-blue-200 text-center transform hover:scale-105 transition-all duration-300">
+                                <div className="text-4xl mb-4">💙</div>
+                                <div className="text-3xl font-bold text-blue-800 mb-2">
+                                    {stats?.daysActive}
+                                </div>
+                                <div className="text-blue-600">Days of Healing</div>
+                                <div className="text-sm text-blue-500 mt-1">Your healing journey</div>
                             </div>
-                            <div className="text-blue-600">Days of Healing</div>
-                            <div className="text-sm text-blue-500 mt-1">Your healing journey</div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Quick Actions */}
                     <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 mb-12">
