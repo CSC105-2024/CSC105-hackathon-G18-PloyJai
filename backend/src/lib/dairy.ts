@@ -38,7 +38,6 @@ const analyzeEmotion = async (text: string): Promise<EmotionAnalysis> => {
             throw new Error('No response found for the following prompt');
         }
 
-        // Clean up the response to extract JSON
         const jsonMatch = response.match(/\{[\s\S]*\}/)
         if (!jsonMatch) {
             throw new Error('No valid JSON found in response')
@@ -46,20 +45,17 @@ const analyzeEmotion = async (text: string): Promise<EmotionAnalysis> => {
 
         const analysis = JSON.parse(jsonMatch[0])
 
-        // Validate the response
         const validEmotions = ['ANGER', 'SADNESS', 'ANXIETY', 'JOY', 'LOVE', 'FEAR', 'HOPE', 'NEUTRAL']
         if (!validEmotions.includes(analysis.emotion)) {
             analysis.emotion = 'NEUTRAL'
         }
 
-        // Ensure intensity and confidence are between 0-1
         analysis.intensity = Math.max(0, Math.min(1, analysis.intensity || 0.5))
         analysis.confidence = Math.max(0, Math.min(1, analysis.confidence || 0.5))
 
         return analysis
     } catch (error) {
         console.error('Emotion analysis error:', error)
-        // Fallback to neutral emotion
         return {
             emotion: 'NEUTRAL',
             intensity: 0.5,
@@ -93,7 +89,7 @@ const calculateCurrentOpacity = (entry: any): number => {
     const fadeProgress = hoursPassed / (24 * 7) // 7 days base
     const adjustedFadeProgress = fadeProgress * entry.fadeRate
 
-    // Accelerate fade based on view count (paradox feature)
+    // Accelerate fade based on view count
     const viewPenalty = entry.viewCount * 0.05
 
     const opacity = Math.max(0, 1 - adjustedFadeProgress - viewPenalty)
