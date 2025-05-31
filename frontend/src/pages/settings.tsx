@@ -118,7 +118,7 @@ function Page() {
                 {/* Header */}
                 <div className="bg-white/80 backdrop-blur-sm border-b border-indigo-200">
                     <div className="max-w-4xl mx-auto px-4 py-6">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div>
                                 <h1 className="text-3xl font-bold text-indigo-800 mb-2">
                                     PloyJai Settings
