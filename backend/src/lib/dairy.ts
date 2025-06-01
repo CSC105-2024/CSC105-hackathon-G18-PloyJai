@@ -1,5 +1,7 @@
 import {getGemini} from "@/lib/gemini.js";
 import {EmotionAnalysis} from "@/types/diary.js";
+import {getPrisma} from "@/lib/prisma.js";
+import {$Enums, EmotionType} from "@/prisma/generated/index.js";
 
 const analyzeEmotion = async (text: string): Promise<EmotionAnalysis> => {
     try {
@@ -76,6 +78,54 @@ const analyzeEmotion = async (text: string): Promise<EmotionAnalysis> => {
     }
 }
 
+const calculateFadeRateWithSettings = async (
+    emotion: EmotionType,
+    intensity: number,
+    userId: string
+): Promise<number> => {
+    const prisma = getPrisma();
+
+    try {
+        let fadeSettings = await prisma.fadeSettings.findUnique({
+            where: { userId }
+        });
+
+        if (!fadeSettings) {
+            fadeSettings = await prisma.fadeSettings.create({
+                data: { userId }
+            });
+        }
+
+        const emotionFadeRates = {
+            ANGER: fadeSettings.angerFadeRate,
+            SADNESS: fadeSettings.sadnessFadeRate,
+            ANXIETY: fadeSettings.anxietyFadeRate,
+            JOY: fadeSettings.joyFadeRate,
+            FEAR: fadeSettings.fearFadeRate,
+            LOVE: fadeSettings.loveFadeRate,
+            HOPE: fadeSettings.hopeFadeRate,
+            NEUTRAL: fadeSettings.neutralFadeRate,
+        };
+
+        // @ts-ignore
+        const baseFadeRate = emotionFadeRates[emotion];
+        const isPositiveEmotion = ['JOY', 'LOVE', 'HOPE'].includes(emotion);
+
+        let finalFadeRate;
+        if (isPositiveEmotion) {
+            finalFadeRate = baseFadeRate * (2 - intensity);
+        } else {
+            finalFadeRate = baseFadeRate * (0.5 + intensity);
+        }
+
+        return Math.max(0.1, finalFadeRate); // Minimum fade rate of 0.1
+    } catch (error) {
+        console.error('Error fetching fade settings:', error);
+        return calculateFadeRate(emotion, intensity);
+    }
+}
+
+
 const calculateFadeRate = (emotion: string, intensity: number): number => {
     const baseRates = {
         ANGER: 2.0,
@@ -108,8 +158,61 @@ const calculateCurrentOpacity = (entry: any): number => {
     return opacity
 }
 
+const calculateCurrentOpacityWithSettings = async (entry: any): Promise<number> => {
+    const prisma = getPrisma();
+
+    let fadeSettings = await prisma.fadeSettings.findUnique({
+        where: { userId: entry.userId }
+    });
+
+    if (!fadeSettings) {
+        fadeSettings = await prisma.fadeSettings.create({
+            data: { userId: entry.userId }
+        });
+    }
+
+    const emotionFadeRates = {
+        ANGER: fadeSettings.angerFadeRate,
+        SADNESS: fadeSettings.sadnessFadeRate,
+        ANXIETY: fadeSettings.anxietyFadeRate,
+        JOY: fadeSettings.joyFadeRate,
+        FEAR: fadeSettings.fearFadeRate,
+        LOVE: fadeSettings.loveFadeRate,
+        HOPE: fadeSettings.hopeFadeRate,
+        NEUTRAL: fadeSettings.neutralFadeRate,
+    };
+
+    // @ts-ignore
+    const baseFadeRate = emotionFadeRates[entry.emotion] || 1.0;
+
+    const isPositiveEmotion = ['JOY', 'LOVE', 'HOPE'].includes(entry.emotion);
+    let currentFadeRate;
+
+    if (isPositiveEmotion) {
+        currentFadeRate = baseFadeRate * (2 - entry.emotionScore);
+    } else {
+        currentFadeRate = baseFadeRate * (0.5 + entry.emotionScore);
+    }
+
+    currentFadeRate = Math.max(0.1, currentFadeRate);
+
+    // Calculate opacity using current fade settings
+    const now = new Date();
+    const fadeStart = new Date(entry.fadeStartDate);
+    const hoursPassed = (now.getTime() - fadeStart.getTime()) / (1000 * 60 * 60);
+
+    const fadeProgress = hoursPassed / (24 * 7); // 7 days base
+    const adjustedFadeProgress = fadeProgress * currentFadeRate;
+    const viewPenalty = entry.viewCount * 0.05;
+
+    const opacity = Math.max(0, 1 - adjustedFadeProgress - viewPenalty);
+    return opacity;
+};
+
 export {
     analyzeEmotion,
     calculateFadeRate,
     calculateCurrentOpacity,
+    calculateFadeRateWithSettings,
+    calculateCurrentOpacityWithSettings
 };

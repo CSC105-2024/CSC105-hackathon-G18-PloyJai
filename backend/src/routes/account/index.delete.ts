@@ -1,7 +1,7 @@
-import type { Context } from "hono";
-import type { AppEnv } from "@/types/env.js";
-import { getPrisma } from "@/lib/prisma.ts";
-import { jwtMiddleware } from "@/middleware/auth.middleware.js";
+import type {Context} from "hono";
+import type {AppEnv} from "@/types/env.js";
+import {getPrisma} from "@/lib/prisma.ts";
+import {jwtMiddleware} from "@/middleware/auth.middleware.js";
 
 export const middleware = [jwtMiddleware];
 
@@ -10,12 +10,12 @@ export default async function (c: Context<AppEnv>) {
     const user = c.get("user");
 
     if (!user) {
-        return c.json({ success: false, message: "Unauthorized" }, 401);
+        return c.json({success: false, message: "Unauthorized"}, 401);
     }
 
     try {
         await prisma.user.delete({
-            where: { id: user.id },
+            where: {id: user.id},
         });
 
         return c.json({
@@ -25,7 +25,7 @@ export default async function (c: Context<AppEnv>) {
     } catch (error) {
         console.error("Delete account error:", error);
         return c.json(
-            { success: false, message: "Failed to delete account" },
+            {success: false, message: "Failed to delete account"},
             500
         );
     }

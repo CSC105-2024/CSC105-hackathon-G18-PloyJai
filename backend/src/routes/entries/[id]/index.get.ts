@@ -20,14 +20,14 @@ export default async function (c: Context<AppEnv>) {
         })
 
         if (!entry) {
-            return c.json({ error: 'Entry not found' }, 404)
+            return c.json({error: 'Entry not found'}, 404)
         }
 
         // Update view count and last viewed time
         const updatedEntry = await prisma.diaryEntry.update({
-            where: { id: entryId },
+            where: {id: entryId},
             data: {
-                viewCount: { increment: 1 },
+                viewCount: {increment: 1},
                 lastViewedAt: new Date()
             }
         })
@@ -38,9 +38,9 @@ export default async function (c: Context<AppEnv>) {
             currentOpacity: calculateCurrentOpacity(updatedEntry)
         }
 
-        return c.json({ entry: entryWithOpacity })
+        return c.json({entry: entryWithOpacity})
     } catch (error) {
         console.error('Get entry error:', error)
-        return c.json({ error: 'Failed to fetch entry' }, 500)
+        return c.json({error: 'Failed to fetch entry'}, 500)
     }
 }

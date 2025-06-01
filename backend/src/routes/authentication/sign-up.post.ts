@@ -1,9 +1,9 @@
-import type { Context } from "hono";
-import type { AppEnv } from "@/types/env.js";
-import { createUser } from "@/services/user.service.js";
-import { setAuthCookie } from "@/middleware/auth.middleware.js";
-import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
+import type {Context} from "hono";
+import type {AppEnv} from "@/types/env.js";
+import {createUser} from "@/services/user.service.js";
+import {setAuthCookie} from "@/middleware/auth.middleware.js";
+import {zValidator} from "@hono/zod-validator";
+import {z} from "zod";
 
 const signupSchema = z.object({
     name: z.string().min(1),
@@ -22,8 +22,8 @@ export const middleware = [
 export default async function (c: Context<AppEnv>) {
     try {
         // @ts-ignore
-        const { name, email, password } = c.req.valid("json");
-        const user = await createUser({ name, email, password });
+        const {name, email, password} = c.req.valid("json");
+        const user = await createUser({name, email, password});
 
         await setAuthCookie(c, {id: user.id, email: user.email});
 

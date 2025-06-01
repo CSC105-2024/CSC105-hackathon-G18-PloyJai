@@ -11,14 +11,14 @@ export default async function (c: Context<AppEnv>) {
         const {id: userId} = c.get('user');
 
         const [totalEntries, totalPlants, fadingEntries] = await Promise.all([
-            prisma.diaryEntry.count({ where: { userId } }),
-            prisma.gardenPlant.count({ where: { userId } }),
-            prisma.diaryEntry.count({ where: { userId, isFullyFaded: false } })
+            prisma.diaryEntry.count({where: {userId}}),
+            prisma.gardenPlant.count({where: {userId}}),
+            prisma.diaryEntry.count({where: {userId, isFullyFaded: false}})
         ])
 
         const firstEntry = await prisma.diaryEntry.findFirst({
-            where: { userId },
-            orderBy: { createdAt: 'asc' }
+            where: {userId},
+            orderBy: {createdAt: 'asc'}
         })
 
         const daysActive = firstEntry
@@ -36,6 +36,6 @@ export default async function (c: Context<AppEnv>) {
         })
     } catch (error) {
         console.error('Get stats error:', error)
-        return c.json({ error: 'Failed to fetch stats' }, 500)
+        return c.json({error: 'Failed to fetch stats'}, 500)
     }
 }

@@ -1,7 +1,6 @@
-import type { Context } from "hono";
-import type { AppEnv } from "@/types/env.js";
-import { getUserById } from "@/services/user.service.js";
-import {getPrisma} from "@/lib/prisma.js";
+import type {Context} from "hono";
+import type {AppEnv} from "@/types/env.js";
+import {getUserById} from "@/services/user.service.js";
 
 export default async function (c: Context<AppEnv>) {
     try {

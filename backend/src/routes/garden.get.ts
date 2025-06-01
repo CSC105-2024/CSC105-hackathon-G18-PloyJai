@@ -1,13 +1,13 @@
 import {jwtMiddleware} from "@/middleware/auth.middleware.js";
 import type {Context} from "hono";
 import type {AppEnv} from "@/types/env.js";
-import { getPrisma } from "@/lib/prisma.ts";
+import {getPrisma} from "@/lib/prisma.ts";
 import {Prisma} from "@/prisma/generated/index.js";
 import GardenPlantCreateManyInput = Prisma.GardenPlantCreateManyInput;
 
 export const middleware = [jwtMiddleware];
 
-export default async function(c: Context<AppEnv>) {
+export default async function (c: Context<AppEnv>) {
     try {
         const prisma = getPrisma();
         const {id: userId} = c.get('user');
@@ -67,7 +67,7 @@ export default async function(c: Context<AppEnv>) {
         }
 
         const plants = await prisma.gardenPlant.findMany({
-            where: { userId },
+            where: {userId},
             include: {
                 diaryEntry: {
                     select: {
@@ -80,9 +80,9 @@ export default async function(c: Context<AppEnv>) {
             }
         })
 
-        return c.json({ plants })
+        return c.json({plants})
     } catch (error) {
         console.error('Get garden error:', error)
-        return c.json({ error: 'Failed to fetch garden' }, 500)
+        return c.json({error: 'Failed to fetch garden'}, 500)
     }
 }

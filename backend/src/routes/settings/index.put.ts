@@ -5,14 +5,14 @@ import {getPrisma} from "@/lib/prisma.js";
 
 export const middleware = [jwtMiddleware];
 
-export default async function(c: Context<AppEnv>) {
+export default async function (c: Context<AppEnv>) {
     try {
         const prisma = getPrisma();
         const {id: userId} = c.get('user');
         const settingsData = await c.req.json()
 
         const settings = await prisma.fadeSettings.upsert({
-            where: { userId },
+            where: {userId},
             update: settingsData,
             create: {
                 userId,
@@ -26,6 +26,6 @@ export default async function(c: Context<AppEnv>) {
         })
     } catch (error) {
         console.error('Update settings error:', error)
-        return c.json({ error: 'Failed to update settings' }, 500)
+        return c.json({error: 'Failed to update settings'}, 500)
     }
 }

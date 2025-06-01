@@ -1,23 +1,27 @@
 import {jwtMiddleware} from "@/middleware/auth.middleware.js";
 import type {Context} from "hono";
 import type {AppEnv} from "@/types/env.js";
-import {analyzeEmotion, calculateFadeRate} from "@/lib/dairy.js";
+import {analyzeEmotion, calculateFadeRateWithSettings} from "@/lib/dairy.js";
 import {getPrisma} from "@/lib/prisma.js";
 
 export const middleware = [jwtMiddleware];
 
-export default async function(c: Context<AppEnv>) {
+export default async function (c: Context<AppEnv>) {
     try {
         const prisma = getPrisma();
-        const { id: userId } = c.get('user');
-        const { content, title } = await c.req.json()
+        const {id: userId} = c.get('user');
+        const {content, title} = await c.req.json()
 
         if (!content || content.trim().length === 0) {
-            return c.json({ error: 'Content is required' }, 400)
+            return c.json({error: 'Content is required'}, 400)
         }
 
         const emotionAnalysis = await analyzeEmotion(content)
-        const fadeRate = calculateFadeRate(emotionAnalysis.emotion, emotionAnalysis.intensity)
+        const fadeRate = await calculateFadeRateWithSettings(
+            emotionAnalysis.emotion as any,
+            emotionAnalysis.intensity,
+            userId
+        );
 
         const entry = await prisma.diaryEntry.create({
             data: {
@@ -40,6 +44,6 @@ export default async function(c: Context<AppEnv>) {
         })
     } catch (error) {
         console.error('Create entry error:', error)
-        return c.json({ error: 'Failed to create entry' }, 500)
+        return c.json({error: 'Failed to create entry'}, 500)
     }
 }

@@ -72,7 +72,7 @@ function DefaultLayout({ children }: {children: React.ReactNode | React.ReactNod
     }
 
     return (
-        <div className="min-h-[calc(100svh+56.67px)] md:min-h-screen bg-gray-50">
+        <div className="min-h-[calc(100svh+60px)] lg:min-h-screen bg-gray-50">
             {/* Desktop Sidebar */}
             <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 lg:bg-white lg:border-r lg:border-gray-200">
                 <div className="flex-1 flex flex-col min-h-0">
