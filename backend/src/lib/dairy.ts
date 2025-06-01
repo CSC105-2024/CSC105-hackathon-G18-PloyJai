@@ -8,23 +8,35 @@ const analyzeEmotion = async (text: string): Promise<EmotionAnalysis> => {
 
     Text: "${text}"
 
-    Analyze the dominant emotion and return in this exact format:
+    Analyze the dominant emotion and return it in this exact format:
     {
       "emotion": "ANGER|SADNESS|ANXIETY|JOY|LOVE|FEAR|HOPE|NEUTRAL",
       "intensity": 0.0-1.0,
       "confidence": 0.0-1.0
     }
-
+    
+    Definitions:
+    - intensity: A measure of the strength or magnitude of the emotion expressed in the text, ranging from 0.0 (barely perceptible) to 1.0 (extremely intense).
+    - confidence: A measure of the AI’s certainty in its assessment of the dominant emotion, ranging from 0.0 (very low confidence) to 1.0 (very high confidence).
+    
     Guidelines:
     - ANGER: rage, fury, irritation, annoyance
-    - SADNESS: grief, sorrow, depression, melancholy  
+    - SADNESS: grief, sorrow, depression, melancholy
     - ANXIETY: worry, stress, nervousness, panic
     - JOY: happiness, excitement, delight, pleasure
     - LOVE: affection, romantic feelings, care, warmth
     - FEAR: terror, phobia, dread, apprehension
     - HOPE: optimism, faith, expectation, aspiration
     - NEUTRAL: calm, balanced, factual, mundane
-
+    
+    Example Intensity Levels:
+    - 0.0 (No intensity): "She simply stated her opinion without any hint of emotion."
+    - 0.2 (Very low intensity): "She felt a mild sense of annoyance but quickly let it go."
+    - 0.4 (Low intensity): "She was a bit irritated by the noise, but it didn’t really bother her."
+    - 0.6 (Moderate intensity): "She felt quite frustrated by the constant interruptions."
+    - 0.8 (High intensity): "Her anger was boiling over, and she could barely contain herself."
+    - 1.0 (Extreme intensity): "She was absolutely furious, screaming and throwing things across the room."
+    
     Return only the JSON object.
     `
 
