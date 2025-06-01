@@ -21,6 +21,7 @@ import {apiClient} from '@/lib/api';
 import type {DiaryEntry} from '@/types'
 import {useEntries} from '@/hooks/use-entries.ts'
 import {useCleanup} from "@/hooks/use-cleanup.ts";
+import { EmotionEffectCard } from '@/components/diary/card';
 
 function Page() {
     const [filter, setFilter] = useState<'all' | 'fading' | 'transformed'>('all');
@@ -322,151 +323,154 @@ function Page() {
                             const isLoading = actionLoading === entry.id;
 
                             return (
-                                <div
+                                <EmotionEffectCard
                                     key={entry.id}
-                                    className={`group relative overflow-hidden rounded-3xl border transition-all duration-500 ${
-                                        entry.isFullyFaded
-                                            ? 'bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 cursor-default'
-                                            : `bg-gradient-to-r ${emotion.bgGradient} border-slate-200 cursor-pointer hover:shadow-xl hover:scale-[1.02] hover:border-slate-300`
-                                    } ${isLoading ? 'opacity-50' : ''}`}
-                                    onClick={() => !isLoading && handleEntryView(entry)}
+                                    entry={entry}
+                                    emotion={emotion}
+                                    isLoading={isLoading}
+                                    fadeProgress={fadeProgress}
+                                    onCardClick={() => {}}
                                 >
-                                    {/* Fade Progress Bar */}
-                                    {!entry.isFullyFaded && (
-                                        <div className="absolute top-0 left-0 right-0 h-1 bg-slate-200">
-                                            <div
-                                                className="h-full bg-gradient-to-r from-blue-400 to-purple-500 transition-all duration-1000"
-                                                style={{width: `${fadeProgress}%`}}
-                                            />
-                                        </div>
-                                    )}
-
-                                    {/* Loading Overlay */}
-                                    {isLoading && (
-                                        <div
-                                            className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-10">
-                                            <div
-                                                className="w-8 h-8 border-2 border-indigo-300 border-t-indigo-600 rounded-full animate-spin"></div>
-                                        </div>
-                                    )}
-
-                                    <div className="p-6">
-                                        {/* Header */}
-                                        <div
-                                            className="flex flex-col md:flex-row gap-4 items-start justify-between mb-4">
-                                            <div className="flex items-center gap-4">
+                                    <div
+                                        onClick={() => !isLoading && handleEntryView(entry)}
+                                    >
+                                        {/* Fade Progress Bar */}
+                                        {!entry.isFullyFaded && (
+                                            <div className="absolute top-0 left-0 right-0 h-1 bg-slate-200">
                                                 <div
-                                                    className={`relative w-14 h-14 rounded-full flex items-center justify-center shadow-lg ${
-                                                        entry.isFullyFaded ? 'bg-emerald-100' : 'bg-white/80'
-                                                    }`}>
-                                                    {entry.isFullyFaded ? (
-                                                        <Leaf size={24} className="text-emerald-600"/>
-                                                    ) : (
-                                                        <EmotionIcon size={24} style={{color: emotion.color}}/>
-                                                    )}
-                                                    {!entry.isFullyFaded && (
-                                                        <div
-                                                            className="absolute inset-0 rounded-full border-4 border-transparent"
-                                                            style={{
-                                                                borderTopColor: emotion.color,
-                                                                opacity: entry.currentOpacity,
-                                                                transform: `rotate(${(1 - entry.currentOpacity) * 360}deg)`,
-                                                                transition: 'all 0.5s ease'
-                                                            }}
-                                                        />
-                                                    )}
-                                                </div>
+                                                    className="h-full bg-gradient-to-r from-blue-400 to-purple-500 transition-all duration-1000"
+                                                    style={{width: `${fadeProgress}%`}}
+                                                />
+                                            </div>
+                                        )}
 
-                                                <div className="space-y-1">
-                                                    <h3 className="text-lg font-semibold text-slate-800">
-                                                        {emotion.name}
-                                                    </h3>
+                                        {/* Loading Overlay */}
+                                        {isLoading && (
+                                            <div
+                                                className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-10">
+                                                <div
+                                                    className="w-8 h-8 border-2 border-indigo-300 border-t-indigo-600 rounded-full animate-spin"></div>
+                                            </div>
+                                        )}
+
+                                        <div className="p-6">
+                                            {/* Header */}
+                                            <div
+                                                className="flex flex-col md:flex-row gap-4 items-start justify-between mb-4">
+                                                <div className="flex items-center gap-4">
                                                     <div
-                                                        className="flex flex-col md:flex-row md:items-center gap-3 text-sm text-slate-600">
-                                                        <div className="flex items-center gap-1">
-                                                            <Calendar size={14}/>
-                                                            {getTimeAgo(entry.createdAt)}
-                                                        </div>
-                                                        {entry.lastViewedAt && (
-                                                            <div className="flex items-center gap-1">
-                                                                <Eye size={14}/>
-                                                                Viewed {entry.viewCount} times
-                                                            </div>
+                                                        className={`relative w-14 h-14 rounded-full flex items-center justify-center shadow-lg ${
+                                                            entry.isFullyFaded ? 'bg-emerald-100' : 'bg-white/80'
+                                                        }`}>
+                                                        {entry.isFullyFaded ? (
+                                                            <Leaf size={24} className="text-emerald-600"/>
+                                                        ) : (
+                                                            <EmotionIcon size={24} style={{color: emotion.color}}/>
+                                                        )}
+                                                        {!entry.isFullyFaded && (
+                                                            <div
+                                                                className="absolute inset-0 rounded-full border-4 border-transparent"
+                                                                style={{
+                                                                    borderTopColor: emotion.color,
+                                                                    opacity: entry.currentOpacity,
+                                                                    transform: `rotate(${(1 - entry.currentOpacity) * 360}deg)`,
+                                                                    transition: 'all 0.5s ease'
+                                                                }}
+                                                            />
                                                         )}
                                                     </div>
+
+                                                    <div className="space-y-1">
+                                                        <h3 className="text-lg font-semibold text-slate-800">
+                                                            {emotion.name}
+                                                        </h3>
+                                                        <div
+                                                            className="flex flex-col md:flex-row md:items-center gap-3 text-sm text-slate-600">
+                                                            <div className="flex items-center gap-1">
+                                                                <Calendar size={14}/>
+                                                                {getTimeAgo(entry.createdAt)}
+                                                            </div>
+                                                            {entry.lastViewedAt && (
+                                                                <div className="flex items-center gap-1">
+                                                                    <Eye size={14}/>
+                                                                    Viewed {entry.viewCount} times
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="text-right space-y-1">
+                                                    {entry.isFullyFaded ? (
+                                                        <div className="text-emerald-700 font-medium text-sm">
+                                                            🌱 Transformed into plant
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <div
+                                                                className={`text-sm font-medium ${getOpacityColor(entry.currentOpacity)}`}>
+                                                                {Math.round(entry.currentOpacity * 100)}% visible
+                                                            </div>
+                                                            <div className="text-xs text-slate-500">
+                                                                {getFadeTimeRemaining(entry)}
+                                                            </div>
+                                                        </>
+                                                    )}
                                                 </div>
                                             </div>
 
-                                            <div className="text-right space-y-1">
+                                            {/* Content Preview */}
+                                            <div
+                                                className={`text-slate-700 leading-relaxed mb-4 text-base ${
+                                                    entry.isFullyFaded ? 'italic text-center' : ''
+                                                }`}
+                                                style={{
+                                                    opacity: entry.isFullyFaded ? 0.6 : Math.max(0.3, entry.currentOpacity),
+                                                    filter: entry.isFullyFaded ? 'blur(1px)' :
+                                                        entry.currentOpacity < 0.3 ? 'blur(0.5px)' : 'none',
+                                                    transition: 'all 0.5s ease'
+                                                }}
+                                            >
                                                 {entry.isFullyFaded ? (
-                                                    <div className="text-emerald-700 font-medium text-sm">
-                                                        🌱 Transformed into plant
+                                                    <div className="py-6 text-emerald-600">
+                                                        ✨ This memory has transformed into something beautiful in your
+                                                        garden
+                                                        <div className="text-sm mt-2 text-emerald-500">
+                                                            Transformed: {entry.transformedAt ? getTimeAgo(entry.transformedAt) : 'Recently'}
+                                                        </div>
                                                     </div>
                                                 ) : (
                                                     <>
-                                                        <div
-                                                            className={`text-sm font-medium ${getOpacityColor(entry.currentOpacity)}`}>
-                                                            {Math.round(entry.currentOpacity * 100)}% visible
-                                                        </div>
-                                                        <div className="text-xs text-slate-500">
-                                                            {getFadeTimeRemaining(entry)}
-                                                        </div>
+                                                        {entry.title && (
+                                                            <div className="font-semibold text-slate-800 mb-2">
+                                                                {entry.title}
+                                                            </div>
+                                                        )}
+                                                        {entry.content.length > 200
+                                                            ? entry.content.substring(0, 200) + '...'
+                                                            : entry.content}
                                                     </>
                                                 )}
                                             </div>
-                                        </div>
 
-                                        {/* Content Preview */}
-                                        <div
-                                            className={`text-slate-700 leading-relaxed mb-4 text-base ${
-                                                entry.isFullyFaded ? 'italic text-center' : ''
-                                            }`}
-                                            style={{
-                                                opacity: entry.isFullyFaded ? 0.6 : Math.max(0.3, entry.currentOpacity),
-                                                filter: entry.isFullyFaded ? 'blur(1px)' :
-                                                    entry.currentOpacity < 0.3 ? 'blur(0.5px)' : 'none',
-                                                transition: 'all 0.5s ease'
-                                            }}
-                                        >
-                                            {entry.isFullyFaded ? (
-                                                <div className="py-6 text-emerald-600">
-                                                    ✨ This memory has transformed into something beautiful in your
-                                                    garden
-                                                    <div className="text-sm mt-2 text-emerald-500">
-                                                        Transformed: {entry.transformedAt ? getTimeAgo(entry.transformedAt) : 'Recently'}
+                                            {/* Footer */}
+                                            <div className="flex items-center justify-between text-sm">
+                                                <div className="text-slate-500">
+                                                    {emotion.description}
+                                                </div>
+
+                                                {!entry.isFullyFaded && (
+                                                    <div className="flex items-center gap-2">
+                                                        <Clock size={14} className="text-slate-400"/>
+                                                        <span className="text-slate-500">
+                                                            Fade rate: {entry.fadeRate}x
+                                                        </span>
                                                     </div>
-                                                </div>
-                                            ) : (
-                                                <>
-                                                    {entry.title && (
-                                                        <div className="font-semibold text-slate-800 mb-2">
-                                                            {entry.title}
-                                                        </div>
-                                                    )}
-                                                    {entry.content.length > 200
-                                                        ? entry.content.substring(0, 200) + '...'
-                                                        : entry.content}
-                                                </>
-                                            )}
-                                        </div>
-
-                                        {/* Footer */}
-                                        <div className="flex items-center justify-between text-sm">
-                                            <div className="text-slate-500">
-                                                {emotion.description}
+                                                )}
                                             </div>
-
-                                            {!entry.isFullyFaded && (
-                                                <div className="flex items-center gap-2">
-                                                    <Clock size={14} className="text-slate-400"/>
-                                                    <span className="text-slate-500">
-                                                        Fade rate: {entry.fadeRate}x
-                                                    </span>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
-                                </div>
+                                </EmotionEffectCard>
                             );
                         })}
                     </div>
