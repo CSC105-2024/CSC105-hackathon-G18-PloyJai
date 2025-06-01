@@ -301,6 +301,6 @@ function Page() {
             </div>
         </DefaultLayout>
     );
-};
+}
 
 export default Page;

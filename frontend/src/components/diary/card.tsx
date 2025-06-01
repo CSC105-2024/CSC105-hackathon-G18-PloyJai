@@ -224,7 +224,7 @@ const AnxietyCard = ({entry, emotion, onCardClick, isLoading, children, fadeProg
 const JoyCard = ({entry, emotion, onCardClick, isLoading, children, fadeProgress}: EmotionCard) => {
     const shouldShowEffect = fadeProgress > 70;
     const effectIntensity = Math.min((100 - fadeProgress) / 100, 0.8) + 3;
-    
+
     const generateSparkles = (count: number) => {
         if (!shouldShowEffect) return null;
 
@@ -541,7 +541,8 @@ const NeutralCard = ({entry, emotion, onCardClick, isLoading, children}: Emotion
 
 const EmotionEffectCard = ({entry, emotion, onCardClick, isLoading, children, fadeProgress}: EmotionCard) => {
     const CardComponent: {// @ts-ignore
-        [key: EmotionAnalysis['emotion']]: React.ComponentType<EmotionCard>} = {
+        [key: EmotionAnalysis['emotion']]: React.ComponentType<EmotionCard>
+    } = {
         'ANGER': AngerCard,
         'SADNESS': SadnessCard,
         'ANXIETY': AnxietyCard,

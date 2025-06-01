@@ -1,4 +1,4 @@
-import type { User } from "@/prisma/generated/index.js";
+import type {User} from "@/prisma/generated/index.js";
 
 export type AppEnv = {
     Bindings: {

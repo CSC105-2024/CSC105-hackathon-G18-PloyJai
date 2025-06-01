@@ -1,6 +1,6 @@
-import { apiClient } from "@/lib/api";
-import type { UserStats } from "@/types";
-import {useEffect, useState } from "react";
+import {apiClient} from "@/lib/api";
+import type {UserStats} from "@/types";
+import {useEffect, useState} from "react";
 
 export function useStats() {
     const [stats, setStats] = useState<UserStats | null>(null);
@@ -25,5 +25,5 @@ export function useStats() {
         fetchStats();
     }, []);
 
-    return { stats, loading, error, refetch: fetchStats };
+    return {stats, loading, error, refetch: fetchStats};
 }

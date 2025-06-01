@@ -1,5 +1,5 @@
-import { apiClient } from "@/lib/api";
-import type { DiaryEntry, EmotionAnalysis } from "@/types";
+import {apiClient} from "@/lib/api";
+import type {DiaryEntry, EmotionAnalysis} from "@/types";
 import {useState} from "react";
 
 export function useCreateEntry() {

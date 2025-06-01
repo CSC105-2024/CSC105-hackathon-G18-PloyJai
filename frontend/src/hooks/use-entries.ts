@@ -1,5 +1,5 @@
-import type { DiaryEntry } from "@/types";
-import {useEffect, useState } from "react";
+import type {DiaryEntry} from "@/types";
+import {useEffect, useState} from "react";
 import {apiClient} from "@/lib/api.ts";
 
 export function useEntries(filter?: 'all' | 'fading' | 'transformed') {
@@ -25,5 +25,5 @@ export function useEntries(filter?: 'all' | 'fading' | 'transformed') {
         fetchEntries();
     }, [filter]);
 
-    return { entries, loading, error, refetch: fetchEntries, setEntries };
+    return {entries, loading, error, refetch: fetchEntries, setEntries};
 }

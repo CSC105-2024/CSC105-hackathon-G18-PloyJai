@@ -1,6 +1,6 @@
-import { apiClient } from "@/lib/api";
-import {useCallback, useEffect, useState } from "react";
-import { useEntries } from "./use-entries";
+import {apiClient} from "@/lib/api";
+import {useEffect, useState} from "react";
+import {useEntries} from "./use-entries";
 
 export function useCleanup() {
     const [loading, setLoading] = useState(false);
@@ -26,13 +26,13 @@ export function useCleanup() {
         }
     };
 
-    return { runCleanup, loading, error, lastCleanup };
+    return {runCleanup, loading, error, lastCleanup};
 }
 
 // Enhanced entries hook with auto-cleanup
 export function useEntriesWithCleanup(filter?: 'all' | 'fading' | 'transformed') {
     const entriesResult = useEntries(filter);
-    const { runCleanup } = useCleanup();
+    const {runCleanup} = useCleanup();
 
     // Auto cleanup when entries are loaded
     useEffect(() => {

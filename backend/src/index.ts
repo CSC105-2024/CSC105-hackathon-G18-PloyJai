@@ -1,5 +1,5 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import {serve} from '@hono/node-server'
+import {Hono} from 'hono'
 import {loadRoutes} from "@/router.js";
 import {compress} from 'hono/compress';
 import {logger} from 'hono/logger';
@@ -12,7 +12,7 @@ import {getGemini} from "@/lib/gemini.js";
 
 async function startServer() {
     const db = getPrisma();
-    const app = new Hono<AppEnv>({ strict: true });
+    const app = new Hono<AppEnv>({strict: true});
 
     const genAI = getGemini();
 

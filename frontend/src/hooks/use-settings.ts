@@ -1,6 +1,6 @@
-import { apiClient } from "@/lib/api";
-import type { Settings } from "@/types";
-import { useEffect, useState } from "react";
+import {apiClient} from "@/lib/api";
+import type {Settings} from "@/types";
+import {useEffect, useState} from "react";
 
 export function useSettings() {
     const [settings, setSettings] = useState<Settings | null>(null);
@@ -38,5 +38,5 @@ export function useSettings() {
         fetchSettings();
     }, []);
 
-    return { settings, loading, error, updateSettings, refetch: fetchSettings };
+    return {settings, loading, error, updateSettings, refetch: fetchSettings};
 }

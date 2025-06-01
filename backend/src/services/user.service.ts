@@ -14,10 +14,10 @@ export type UserLoginInput = {
     password: string;
 };
 
-export const createUser = async ({ name, email, password }: UserCreateInput) => {
-    
+export const createUser = async ({name, email, password}: UserCreateInput) => {
+
     const existingUser = await prisma.user.findUnique({
-        where: { email },
+        where: {email},
     });
 
     if (existingUser) {
@@ -35,14 +35,14 @@ export const createUser = async ({ name, email, password }: UserCreateInput) => 
         },
     });
 
-    const { password: _, ...userWithoutPassword } = user;
+    const {password: _, ...userWithoutPassword} = user;
     return userWithoutPassword;
 };
 
-export const validateUser = async ({ email, password }: UserLoginInput) => {
-    
+export const validateUser = async ({email, password}: UserLoginInput) => {
+
     const user = await prisma.user.findUnique({
-        where: { email },
+        where: {email},
     });
 
     if (!user) {
@@ -55,19 +55,19 @@ export const validateUser = async ({ email, password }: UserLoginInput) => {
         throw new Error("Invalid email or password");
     }
 
-    const { password: _, ...userWithoutPassword } = user;
+    const {password: _, ...userWithoutPassword} = user;
     return userWithoutPassword;
 };
 
 export const getUserById = async (id: string) => {
     const user = await prisma.user.findUnique({
-        where: { id },
+        where: {id},
     });
 
     if (!user) {
         throw new Error("User not found");
     }
-    
-    const { password: _, ...userWithoutPassword } = user;
+
+    const {password: _, ...userWithoutPassword} = user;
     return userWithoutPassword;
 };

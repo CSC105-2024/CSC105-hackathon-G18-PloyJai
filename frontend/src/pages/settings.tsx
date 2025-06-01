@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Save, User, Palette, Clock, Shield, Bell, Trash2, Download, RefreshCw, RectangleEllipsis, Pencil } from 'lucide-react';
+import React, {useState} from 'react';
+import {Clock, Pencil, RectangleEllipsis, RefreshCw, Save, Trash2, User} from 'lucide-react';
 import DefaultLayout from "@/components/layout/default.tsx";
-import { apiClient } from '@/lib/api';
-import { useSettings } from '@/hooks/use-settings.ts';
-import { toast } from 'sonner';
+import {useSettings} from '@/hooks/use-settings.ts';
+import {toast} from 'sonner';
 import axiosInstance from '@/lib/axios.ts';
 import type {Settings} from "@/types";
 
@@ -307,15 +306,19 @@ function Page() {
 
                 {/* Edit Confirmation Modal */}
                 {showEditConfirm && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-orange-200 shadow-lg animate-fade-in">
+                    <div
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                        <div
+                            className="bg-white rounded-3xl p-8 max-w-md w-full border border-orange-200 shadow-lg animate-fade-in">
                             <div className="text-center mb-6">
-                                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Pencil size={32} className="text-orange-600" />
+                                <div
+                                    className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Pencil size={32} className="text-orange-600"/>
                                 </div>
                                 <h3 className="text-xl font-bold text-orange-800 mb-2">Confirm Edit Changes</h3>
                                 <p className="text-orange-600 mb-4">
-                                    Are you sure you want to apply these changes? This action will update your settings and password.
+                                    Are you sure you want to apply these changes? This action will update your settings
+                                    and password.
                                 </p>
 
                                 {/* ช่อง Current Password */}
@@ -415,8 +418,8 @@ function Page() {
                     </div>
                 )}
             </div>
-        </DefaultLayout >
+        </DefaultLayout>
     );
-};
+}
 
 export default Page;

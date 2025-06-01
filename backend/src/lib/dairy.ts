@@ -1,7 +1,7 @@
 import {getGemini} from "@/lib/gemini.js";
 import {EmotionAnalysis} from "@/types/diary.js";
 import {getPrisma} from "@/lib/prisma.js";
-import {$Enums, EmotionType} from "@/prisma/generated/index.js";
+import {EmotionType} from "@/prisma/generated/index.js";
 
 const analyzeEmotion = async (text: string): Promise<EmotionAnalysis> => {
     try {
@@ -87,12 +87,12 @@ const calculateFadeRateWithSettings = async (
 
     try {
         let fadeSettings = await prisma.fadeSettings.findUnique({
-            where: { userId }
+            where: {userId}
         });
 
         if (!fadeSettings) {
             fadeSettings = await prisma.fadeSettings.create({
-                data: { userId }
+                data: {userId}
             });
         }
 
@@ -162,12 +162,12 @@ const calculateCurrentOpacityWithSettings = async (entry: any): Promise<number> 
     const prisma = getPrisma();
 
     let fadeSettings = await prisma.fadeSettings.findUnique({
-        where: { userId: entry.userId }
+        where: {userId: entry.userId}
     });
 
     if (!fadeSettings) {
         fadeSettings = await prisma.fadeSettings.create({
-            data: { userId: entry.userId }
+            data: {userId: entry.userId}
         });
     }
 

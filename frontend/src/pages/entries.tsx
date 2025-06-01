@@ -21,7 +21,7 @@ import {apiClient} from '@/lib/api';
 import type {DiaryEntry} from '@/types'
 import {useEntries} from '@/hooks/use-entries.ts'
 import {useCleanup} from "@/hooks/use-cleanup.ts";
-import { EmotionEffectCard } from '@/components/diary/card';
+import {EmotionEffectCard} from '@/components/diary/card';
 
 function Page() {
     const [filter, setFilter] = useState<'all' | 'fading' | 'transformed'>('all');
@@ -329,7 +329,8 @@ function Page() {
                                     emotion={emotion}
                                     isLoading={isLoading}
                                     fadeProgress={fadeProgress}
-                                    onCardClick={() => {}}
+                                    onCardClick={() => {
+                                    }}
                                 >
                                     <div
                                         onClick={() => !isLoading && handleEntryView(entry)}
@@ -607,6 +608,6 @@ function Page() {
             </div>
         </DefaultLayout>
     );
-};
+}
 
 export default Page;

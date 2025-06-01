@@ -1,7 +1,7 @@
-import { apiClient } from "@/lib/api";
-import type { GardenPlant } from "@/types";
+import {apiClient} from "@/lib/api";
+import type {GardenPlant} from "@/types";
 import {useEffect, useState} from "react";
-import { useCleanup } from "./use-cleanup";
+import {useCleanup} from "./use-cleanup";
 
 export function useGarden() {
     const [plants, setPlants] = useState<GardenPlant[]>([]);
@@ -26,12 +26,12 @@ export function useGarden() {
         fetchGarden();
     }, []);
 
-    return { plants, loading, error, refetch: fetchGarden, setPlants };
+    return {plants, loading, error, refetch: fetchGarden, setPlants};
 }
 
 export function useGardenWithCleanup() {
     const gardenResult = useGarden();
-    const { runCleanup } = useCleanup();
+    const {runCleanup} = useCleanup();
 
     useEffect(() => {
         if (gardenResult.plants.length >= 0) {
